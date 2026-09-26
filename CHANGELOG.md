@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Add office timesheet drafts, recorded task intervals, submission, review, and withdrawal.
+- Add separate overtime approval with recorded-work coverage and overlap checks; approved work is immutable.
+- Enforce office-sector access, reuse scoped reviewer permissions, and document approved overtime as a future payroll input.
+
 - Add shift templates, dated assignments, holidays, and self-service check-in/check-out.
 - Add paid/unpaid whole-day leave, scoped review and cancellation, and self-approval protection.
 - Preserve schedule snapshots and audit mutations atomically; classify assigned days for later reporting/payroll.

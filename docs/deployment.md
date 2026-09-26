@@ -17,7 +17,7 @@ Required production environment:
 | `CSRF_TRUSTED_ORIGINS` | HTTPS origin(s) for admin behind a proxy. |
 | `TRUST_PROXY_HTTPS` | `true` only when the trusted proxy overwrites `X-Forwarded-Proto`. |
 | `ORGANISATION_NAME` | Single installation's organisation name. |
-| `ORGANISATION_SECTOR` | `school`, `clinic`, or `office` (default). Configuration only; modules are planned. |
+| `ORGANISATION_SECTOR` | `office` (default) enables timesheets/overtime. `school` and `clinic` expose shared core only; their modules are planned. |
 | `PORT` | HTTP listening port, default 8000. |
 
 ```sh

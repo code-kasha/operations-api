@@ -100,4 +100,51 @@ Replace dates with future scheduled dates. Employees cannot supply status,
 employee ID, reviewer, or timestamps. Illegal transitions, overlaps, and schedule
 conflicts return 400; forbidden operations on visible records return 403.
 
-Payroll, reporting, and sector endpoints remain planned.
+## Office API
+
+These endpoints require `ORGANISATION_SECTOR=office`. Read the
+[office rules](offices.md) for permissions, transitions, and payroll boundaries.
+Timesheet/overtime lists use the standard pagination. Entries are embedded in
+their parent timesheet; there is no separate entry list endpoint.
+
+| Methods | Path | Behavior |
+| --- | --- | --- |
+| GET, POST | `/api/v1/offices/timesheets/` | Read visible sheets; create your draft using `{"attendance":1}`. |
+| GET | `/api/v1/offices/timesheets/{id}/` | Read entries, totals, status, and reviewer metadata. |
+| POST | `/api/v1/offices/timesheets/{id}/entries/` | Owner adds a task interval to a draft. |
+| GET, PUT, PATCH, DELETE | `/api/v1/offices/timesheet-entries/{id}/` | Read; owner edits/deletes only while parent is a draft. |
+| POST | `/api/v1/offices/timesheets/{id}/submit/` | Owner submits using `{}`. |
+| POST | `/api/v1/offices/timesheets/{id}/review/` | Reviewer sends `decision` (`approved`/`rejected`) and optional `note`. |
+| POST | `/api/v1/offices/timesheets/{id}/cancel/` | Owner cancels draft/submitted work using `{}`. |
+| GET, POST | `/api/v1/offices/overtime-requests/` | Read visible claims; request overtime from your approved sheet. |
+| GET | `/api/v1/offices/overtime-requests/{id}/` | Read claim, duration, status, and review metadata. |
+| POST | `/api/v1/offices/overtime-requests/{id}/review/` | Reviewer sends `decision` and optional `note`. |
+| POST | `/api/v1/offices/overtime-requests/{id}/cancel/` | Owner withdraws a pending claim using `{}`. |
+
+After checking out, create a timesheet and add entries using actual recorded
+bounds. The following is an illustrative payload, not seeded data:
+
+```json
+{
+  "description": "Fictional month-end reconciliation",
+  "starts_at": "2026-10-05T09:01:00+05:30",
+  "ends_at": "2026-10-05T19:00:00+05:30"
+}
+```
+
+Submit, then have a different eligible user approve the sheet. If the scheduled
+shift ended at 17:00 and approved entries cover the interval, request overtime:
+
+```json
+{
+  "timesheet": 1,
+  "starts_at": "2026-10-05T17:00:00+05:30",
+  "ends_at": "2026-10-05T19:00:00+05:30",
+  "reason": "Fictional month-end deadline"
+}
+```
+
+Replace IDs and dates with your own completed records. Review the overtime
+request separately; approving a timesheet alone does not approve extra pay.
+
+Payroll, reporting, schools, and clinics remain planned.

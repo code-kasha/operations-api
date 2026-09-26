@@ -29,6 +29,12 @@ snapshots, attendance, and leave. Its calendar lock serializes writes and relate
 employment-date changes; see [attendance](attendance.md) for the consistency model
 and business rules. Audit events reuse the staff activity stream.
 
+`apps/offices` adds attendance-backed timesheets, non-overlapping task entries,
+and separately reviewed overtime. It uses the same calendar lock and audit
+stream. Approved sheets and overtime are immutable; historical rejected/cancelled
+versions remain available. Sector checks are enforced at API and service
+boundaries. See [offices](offices.md) for the planned payroll consumption contract.
+
 Shared core: staff/departments/roles; shifts/attendance/leave/holidays; salary structures/pay runs/payslips; attendance/payroll/headcount reports; permissions and an atomic fictional-data command.
 
 Sector modules: schools (subjects/timetables/cover), clinics (rosters/on-call/minimum staffing), offices (timesheets/overtime/approvals).

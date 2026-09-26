@@ -18,6 +18,13 @@ an active employee record cannot access staff data.
 | Read assignments/attendance/leave | All | All | Own department | Self |
 | Clock in/out, request leave | Self with employee record | Self | Self | Self |
 | Review leave (never self) | Other employees | Others except admins | Ordinary employees in own department | No |
+| Read office timesheets/overtime | All | All | Own department | Self |
+| Create/submit/cancel office work | Self with employee record | Self | Self | Self |
+| Review office work (never self) | Other employees | Others except admins | Ordinary employees in own department | No |
+
+Office operations require the office sector. Entries can be changed only by the
+owner while the timesheet is a draft. Approved work is immutable. See
+[office rules](offices.md) for the supported transitions.
 
 HR cannot edit an operations admin or their own department/active status.
 Operations admins cannot deactivate or change their own role through the API.

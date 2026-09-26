@@ -701,6 +701,402 @@ paths:
               schema:
                 $ref: '#/components/schemas/Leave'
           description: ''
+  /api/v1/offices/overtime-requests/:
+    get:
+      operationId: api_v1_offices_overtime_requests_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOvertimeList'
+          description: ''
+    post:
+      operationId: api_v1_offices_overtime_requests_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OvertimeCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OvertimeCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OvertimeCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Overtime'
+          description: ''
+  /api/v1/offices/overtime-requests/{id}/:
+    get:
+      operationId: api_v1_offices_overtime_requests_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this overtime request.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Overtime'
+          description: ''
+  /api/v1/offices/overtime-requests/{id}/cancel/:
+    post:
+      operationId: api_v1_offices_overtime_requests_cancel_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this overtime request.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Overtime'
+          description: ''
+  /api/v1/offices/overtime-requests/{id}/review/:
+    post:
+      operationId: api_v1_offices_overtime_requests_review_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this overtime request.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Review'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Review'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Overtime'
+          description: ''
+  /api/v1/offices/timesheet-entries/{id}/:
+    get:
+      operationId: api_v1_offices_timesheet_entries_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this timesheet entry.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entry'
+          description: ''
+    put:
+      operationId: api_v1_offices_timesheet_entries_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this timesheet entry.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Entry'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Entry'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Entry'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entry'
+          description: ''
+    patch:
+      operationId: api_v1_offices_timesheet_entries_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this timesheet entry.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEntry'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEntry'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEntry'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entry'
+          description: ''
+    delete:
+      operationId: api_v1_offices_timesheet_entries_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this timesheet entry.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/offices/timesheets/:
+    get:
+      operationId: api_v1_offices_timesheets_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTimesheetList'
+          description: ''
+    post:
+      operationId: api_v1_offices_timesheets_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimesheetCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TimesheetCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TimesheetCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timesheet'
+          description: ''
+  /api/v1/offices/timesheets/{id}/:
+    get:
+      operationId: api_v1_offices_timesheets_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this timesheet.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timesheet'
+          description: ''
+  /api/v1/offices/timesheets/{id}/cancel/:
+    post:
+      operationId: api_v1_offices_timesheets_cancel_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this timesheet.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timesheet'
+          description: ''
+  /api/v1/offices/timesheets/{id}/entries/:
+    post:
+      operationId: api_v1_offices_timesheets_entries_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this timesheet.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Entry'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Entry'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Entry'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entry'
+          description: ''
+  /api/v1/offices/timesheets/{id}/review/:
+    post:
+      operationId: api_v1_offices_timesheets_review_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this timesheet.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Review'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Review'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timesheet'
+          description: ''
+  /api/v1/offices/timesheets/{id}/submit/:
+    post:
+      operationId: api_v1_offices_timesheets_submit_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this timesheet.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timesheet'
+          description: ''
   /api/v1/shift-assignments/:
     get:
       operationId: api_v1_shift_assignments_list
@@ -1169,6 +1565,30 @@ components:
       - role
       - start_date
       - user
+    Entry:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        timesheet:
+          type: integer
+          readOnly: true
+        description:
+          type: string
+          maxLength: 500
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+      required:
+      - description
+      - ends_at
+      - id
+      - starts_at
+      - timesheet
     Health:
       type: object
       properties:
@@ -1216,7 +1636,7 @@ components:
           readOnly: true
         status:
           allOf:
-          - $ref: '#/components/schemas/StatusEnum'
+          - $ref: '#/components/schemas/RequestStatusEnum'
           readOnly: true
         reviewed_by:
           type: integer
@@ -1266,6 +1686,87 @@ components:
       description: |-
         * `paid` - Paid
         * `unpaid` - Unpaid
+    Overtime:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        timesheet:
+          type: integer
+          readOnly: true
+        starts_at:
+          type: string
+          format: date-time
+          readOnly: true
+        ends_at:
+          type: string
+          format: date-time
+          readOnly: true
+        duration_seconds:
+          type: integer
+          readOnly: true
+        reason:
+          type: string
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/RequestStatusEnum'
+          readOnly: true
+        reviewed_by:
+          type: integer
+          readOnly: true
+          nullable: true
+        reviewed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        review_note:
+          type: string
+          readOnly: true
+        cancelled_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - cancelled_at
+      - created_at
+      - duration_seconds
+      - ends_at
+      - id
+      - reason
+      - review_note
+      - reviewed_at
+      - reviewed_by
+      - starts_at
+      - status
+      - timesheet
+    OvertimeCreate:
+      type: object
+      properties:
+        timesheet:
+          type: integer
+          minimum: 1
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+        reason:
+          type: string
+          maxLength: 500
+      required:
+      - ends_at
+      - reason
+      - starts_at
+      - timesheet
     PaginatedAssignmentList:
       type: object
       required:
@@ -1404,6 +1905,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Leave'
+    PaginatedOvertimeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Overtime'
     PaginatedShiftList:
       type: object
       required:
@@ -1450,6 +1974,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/StaffActivity'
+    PaginatedTimesheetList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Timesheet'
     PatchedDepartment:
       type: object
       properties:
@@ -1501,6 +2048,24 @@ components:
           allOf:
           - $ref: '#/components/schemas/RoleEnum'
           readOnly: true
+    PatchedEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        timesheet:
+          type: integer
+          readOnly: true
+        description:
+          type: string
+          maxLength: 500
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
     PatchedShift:
       type: object
       properties:
@@ -1516,6 +2081,18 @@ components:
         end_time:
           type: string
           format: time
+    RequestStatusEnum:
+      enum:
+      - pending
+      - approved
+      - rejected
+      - cancelled
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `approved` - Approved
+        * `rejected` - Rejected
+        * `cancelled` - Cancelled
     Review:
       type: object
       properties:
@@ -1598,15 +2175,85 @@ components:
       - id
       - target_id
       - target_type
-    StatusEnum:
+    Timesheet:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        attendance:
+          type: integer
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/TimesheetStatusEnum'
+          readOnly: true
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Entry'
+          readOnly: true
+        totals:
+          allOf:
+          - $ref: '#/components/schemas/Totals'
+          readOnly: true
+        submitted_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        reviewed_by:
+          type: integer
+          readOnly: true
+          nullable: true
+        reviewed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        review_note:
+          type: string
+          readOnly: true
+        cancelled_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - attendance
+      - cancelled_at
+      - created_at
+      - entries
+      - id
+      - review_note
+      - reviewed_at
+      - reviewed_by
+      - status
+      - submitted_at
+      - totals
+    TimesheetCreate:
+      type: object
+      properties:
+        attendance:
+          type: integer
+          minimum: 1
+      required:
+      - attendance
+    TimesheetStatusEnum:
       enum:
-      - pending
+      - draft
+      - submitted
       - approved
       - rejected
       - cancelled
       type: string
       description: |-
-        * `pending` - Pending
+        * `draft` - Draft
+        * `submitted` - Submitted
         * `approved` - Approved
         * `rejected` - Rejected
         * `cancelled` - Cancelled
@@ -1649,6 +2296,21 @@ components:
       required:
       - access
       - refresh
+    Totals:
+      type: object
+      properties:
+        total_seconds:
+          type: integer
+        regular_seconds:
+          type: number
+          format: double
+        outside_shift_seconds:
+          type: number
+          format: double
+      required:
+      - outside_shift_seconds
+      - regular_seconds
+      - total_seconds
     User:
       type: object
       properties:

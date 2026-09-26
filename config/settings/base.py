@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "apps.accounts",
     "apps.staff",
     "apps.attendance",
+    "apps.offices",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -105,4 +106,8 @@ SPECTACULAR_SETTINGS = {
     "SWAGGER_UI_DIST": "SIDECAR",
     "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
     "REDOC_DIST": "SIDECAR",
+    "ENUM_NAME_OVERRIDES": {
+        "TimesheetStatusEnum": "apps.offices.models.TimesheetStatus.choices",
+        "RequestStatusEnum": "apps.attendance.models.LeaveStatus.choices",
+    },
 }
