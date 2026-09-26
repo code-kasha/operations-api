@@ -1,6 +1,6 @@
 # Project instructions
 
-Read `agent-start.md` and `docs/architecture.md` before working on this project.
+Read `docs/architecture.md` and `docs/roadmap.md` before working on this project. Maintainer notes, when present locally, live outside the repository in `../operations-api-notes/`.
 
 - One organisation per install; API only; fictional data only.
 - Tests and CI use SQLite. Production uses PostgreSQL.

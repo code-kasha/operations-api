@@ -50,6 +50,4 @@ Shared core: staff/departments/roles; shifts/attendance/leave/holidays; salary s
 
 Sector modules: schools (subjects/timetables/cover), clinics (rosters/on-call/minimum staffing), offices (timesheets/overtime/approvals).
 
-Akash selected shared core + offices for v1.0.0. Schools and clinics follow later; their order and versions remain undecided. See [roadmap](roadmap.md) for implementation order and completion criteria. The paid CRM remains a separate product. No patient records, real client data, or untested payroll compliance claims belong here.
-
-At shipping time, list the portfolio, profile README, and GitHub social-preview updates from `agent-start.md`; do not edit those repositories without a request.
+Akash selected shared core + offices for v1.0.0. Schools and clinics follow later; their order and versions remain undecided. See [roadmap](roadmap.md) for implementation order and completion criteria. No patient records, real client data, or untested payroll compliance claims belong here.

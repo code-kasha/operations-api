@@ -288,7 +288,7 @@ returning on an agreed date without losing their position or pay for those days.
 - Golden-file tests: fixed fictional months with hand-checked payslips.
 - Performance tests for large headcounts; the current per-employee queries are
   simple rather than batched.
-- Multi-organisation tenancy belongs in the paid CRM, not in this project.
+- Multi-organisation tenancy is out of scope: each installation serves one organisation.
 
 ## Sector-specific payroll
 
