@@ -14,7 +14,7 @@ Available now:
 - Database health endpoint, SQLite development/tests, PostgreSQL production settings.
 - Locked uv environment, Docker image definition, and GitHub Actions checks.
 
-Planned: employees, departments, business roles, attendance, leave, payroll, reports, fictional sample data, and school/clinic/office modules. These are not implemented. Payroll does not currently calculate salaries or provide statutory compliance (including PF, ESI, or TDS). The clinic module will cover staff only, with no patient or medical records. Release sequencing remains undecided.
+Planned for v1.0.0: employees, departments, business roles, attendance, leave, payroll, reports, fictional sample data, and the office module (timesheets, overtime, approvals). Schools and clinics follow later. These features are not implemented. Payroll does not currently calculate salaries or provide statutory compliance (including PF, ESI, or TDS). The clinic module will cover staff only, with no patient or medical records. See the [implementation plan](docs/roadmap.md).
 
 ## Quick start
 
