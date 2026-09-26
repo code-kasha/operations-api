@@ -115,3 +115,36 @@ def test_demo_accounts_can_follow_the_workflow(client):
     )
     assert response.status_code == 200
     assert client.get("/api/v1/staff-activity/").data["count"] > 0
+
+
+def reset(password=PASSWORD):
+    call_command("reset_demo", password=password, stdout=StringIO())
+
+
+def test_reset_demo_requires_demo_mode(settings):
+    settings.DEMO_UNTIL = None
+    load()
+    with pytest.raises(CommandError, match="DEMO_UNTIL"):
+        reset()
+    assert Employee.objects.count() == 6
+
+
+def test_reset_demo_replaces_changed_data(settings, django_user_model):
+    settings.DEMO_UNTIL = date(2026, 12, 27)
+    load()
+    fresh = counts()
+    django_user_model.objects.create_user(username="visitor.change")
+    LeaveRequest.objects.update(status="cancelled")
+    reset()
+    assert counts() == fresh
+    assert not django_user_model.objects.filter(username="visitor.change").exists()
+    assert LeaveRequest.objects.filter(status="pending").count() == 1
+
+
+def test_failed_reset_keeps_existing_data(settings):
+    settings.DEMO_UNTIL = date(2026, 12, 27)
+    load()
+    before = counts()
+    with pytest.raises(CommandError):
+        reset(password="demo")
+    assert counts() == before

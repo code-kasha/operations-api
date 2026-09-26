@@ -1,5 +1,6 @@
 import os
-from datetime import timedelta
+import tomllib
+from datetime import date, timedelta
 from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
@@ -10,6 +11,19 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 def env_list(name):
     return [value.strip() for value in os.environ.get(name, "").split(",") if value.strip()]
 
+
+with open(BASE_DIR / "pyproject.toml", "rb") as pyproject:
+    VERSION = tomllib.load(pyproject)["project"]["version"]
+# The commit being served, reported by /health/; Render provides RENDER_GIT_COMMIT.
+REVISION = os.environ.get("SITE_REVISION") or os.environ.get("RENDER_GIT_COMMIT", "")
+
+# A hosted demo sets its shutdown date; this also permits the reset_demo command.
+try:
+    DEMO_UNTIL = (
+        date.fromisoformat(os.environ["DEMO_UNTIL"]) if os.environ.get("DEMO_UNTIL") else None
+    )
+except ValueError as exc:
+    raise ImproperlyConfigured("DEMO_UNTIL must be an ISO date such as 2026-12-27.") from exc
 
 DEBUG = False
 ALLOWED_HOSTS = env_list("ALLOWED_HOSTS")
@@ -106,8 +120,16 @@ SIMPLE_JWT = {
 }
 SPECTACULAR_SETTINGS = {
     "TITLE": "Operations API",
-    "DESCRIPTION": "Staff directory and role-scoped operations API. Fictional data only.",
-    "VERSION": "0.1.0",
+    "DESCRIPTION": "Staff, attendance, office work, payroll, and reports for one organisation. "
+    "Fictional data only."
+    + (
+        f" This public demo runs until {DEMO_UNTIL:%d %B %Y} and resets when it restarts."
+        if DEMO_UNTIL
+        else ""
+    ),
+    "VERSION": VERSION,
+    # Group operations by the first path segment after /api/v1/ (staff, payroll, reports...).
+    "SCHEMA_PATH_PREFIX": r"/api/v1",
     "SERVE_INCLUDE_SCHEMA": False,
     "SWAGGER_UI_DIST": "SIDECAR",
     "SWAGGER_UI_FAVICON_HREF": "SIDECAR",

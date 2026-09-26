@@ -1,12 +1,13 @@
 openapi: 3.0.3
 info:
   title: Operations API
-  version: 0.1.0
-  description: Staff directory and role-scoped operations API. Fictional data only.
+  version: 1.0.0
+  description: Staff, attendance, office work, payroll, and reports for one organisation.
+    Fictional data only.
 paths:
   /api/v1/attendance/:
     get:
-      operationId: api_v1_attendance_list
+      operationId: attendance_list
       parameters:
       - name: page
         required: false
@@ -15,7 +16,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - attendance
       security:
       - jwtAuth: []
       responses:
@@ -27,7 +28,7 @@ paths:
           description: ''
   /api/v1/attendance/{id}/:
     get:
-      operationId: api_v1_attendance_retrieve
+      operationId: attendance_retrieve
       parameters:
       - in: path
         name: id
@@ -36,7 +37,7 @@ paths:
         description: A unique integer value identifying this attendance.
         required: true
       tags:
-      - api
+      - attendance
       security:
       - jwtAuth: []
       responses:
@@ -48,7 +49,7 @@ paths:
           description: ''
   /api/v1/attendance/{id}/check-out/:
     post:
-      operationId: api_v1_attendance_check_out_create
+      operationId: attendance_check_out_create
       parameters:
       - in: path
         name: id
@@ -57,7 +58,7 @@ paths:
         description: A unique integer value identifying this attendance.
         required: true
       tags:
-      - api
+      - attendance
       security:
       - jwtAuth: []
       responses:
@@ -69,9 +70,9 @@ paths:
           description: ''
   /api/v1/attendance/check-in/:
     post:
-      operationId: api_v1_attendance_check_in_create
+      operationId: attendance_check_in_create
       tags:
-      - api
+      - attendance
       requestBody:
         content:
           application/json:
@@ -95,12 +96,12 @@ paths:
           description: ''
   /api/v1/auth/logout/:
     post:
-      operationId: api_v1_auth_logout_create
+      operationId: auth_logout_create
       description: |-
         Takes a token and blacklists it. Must be used with the
         `rest_framework_simplejwt.token_blacklist` app installed.
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -122,9 +123,9 @@ paths:
           description: ''
   /api/v1/auth/me/:
     get:
-      operationId: api_v1_auth_me_retrieve
+      operationId: auth_me_retrieve
       tags:
-      - api
+      - auth
       security:
       - jwtAuth: []
       responses:
@@ -136,12 +137,12 @@ paths:
           description: ''
   /api/v1/auth/token/:
     post:
-      operationId: api_v1_auth_token_create
+      operationId: auth_token_create
       description: |-
         Takes a set of user credentials and returns an access and refresh JSON web
         token pair to prove the authentication of those credentials.
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -163,12 +164,12 @@ paths:
           description: ''
   /api/v1/auth/token/refresh/:
     post:
-      operationId: api_v1_auth_token_refresh_create
+      operationId: auth_token_refresh_create
       description: |-
         Takes a refresh type JSON web token and returns an access type JSON web
         token if the refresh token is valid.
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -190,7 +191,7 @@ paths:
           description: ''
   /api/v1/departments/:
     get:
-      operationId: api_v1_departments_list
+      operationId: departments_list
       parameters:
       - name: page
         required: false
@@ -199,7 +200,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - departments
       security:
       - jwtAuth: []
       responses:
@@ -210,9 +211,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedDepartmentList'
           description: ''
     post:
-      operationId: api_v1_departments_create
+      operationId: departments_create
       tags:
-      - api
+      - departments
       requestBody:
         content:
           application/json:
@@ -236,7 +237,7 @@ paths:
           description: ''
   /api/v1/departments/{id}/:
     get:
-      operationId: api_v1_departments_retrieve
+      operationId: departments_retrieve
       parameters:
       - in: path
         name: id
@@ -245,7 +246,7 @@ paths:
         description: A unique integer value identifying this department.
         required: true
       tags:
-      - api
+      - departments
       security:
       - jwtAuth: []
       responses:
@@ -256,7 +257,7 @@ paths:
                 $ref: '#/components/schemas/Department'
           description: ''
     put:
-      operationId: api_v1_departments_update
+      operationId: departments_update
       parameters:
       - in: path
         name: id
@@ -265,7 +266,7 @@ paths:
         description: A unique integer value identifying this department.
         required: true
       tags:
-      - api
+      - departments
       requestBody:
         content:
           application/json:
@@ -288,7 +289,7 @@ paths:
                 $ref: '#/components/schemas/Department'
           description: ''
     patch:
-      operationId: api_v1_departments_partial_update
+      operationId: departments_partial_update
       parameters:
       - in: path
         name: id
@@ -297,7 +298,7 @@ paths:
         description: A unique integer value identifying this department.
         required: true
       tags:
-      - api
+      - departments
       requestBody:
         content:
           application/json:
@@ -319,7 +320,7 @@ paths:
                 $ref: '#/components/schemas/Department'
           description: ''
     delete:
-      operationId: api_v1_departments_destroy
+      operationId: departments_destroy
       parameters:
       - in: path
         name: id
@@ -328,7 +329,7 @@ paths:
         description: A unique integer value identifying this department.
         required: true
       tags:
-      - api
+      - departments
       security:
       - jwtAuth: []
       responses:
@@ -336,7 +337,7 @@ paths:
           description: No response body
   /api/v1/employees/:
     get:
-      operationId: api_v1_employees_list
+      operationId: employees_list
       parameters:
       - name: page
         required: false
@@ -345,7 +346,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - employees
       security:
       - jwtAuth: []
       responses:
@@ -356,9 +357,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedEmployeeList'
           description: ''
     post:
-      operationId: api_v1_employees_create
+      operationId: employees_create
       tags:
-      - api
+      - employees
       requestBody:
         content:
           application/json:
@@ -382,7 +383,7 @@ paths:
           description: ''
   /api/v1/employees/{id}/:
     get:
-      operationId: api_v1_employees_retrieve
+      operationId: employees_retrieve
       parameters:
       - in: path
         name: id
@@ -391,7 +392,7 @@ paths:
         description: A unique integer value identifying this employee.
         required: true
       tags:
-      - api
+      - employees
       security:
       - jwtAuth: []
       responses:
@@ -402,7 +403,7 @@ paths:
                 $ref: '#/components/schemas/Employee'
           description: ''
     put:
-      operationId: api_v1_employees_update
+      operationId: employees_update
       parameters:
       - in: path
         name: id
@@ -411,7 +412,7 @@ paths:
         description: A unique integer value identifying this employee.
         required: true
       tags:
-      - api
+      - employees
       requestBody:
         content:
           application/json:
@@ -434,7 +435,7 @@ paths:
                 $ref: '#/components/schemas/EmployeeUpdate'
           description: ''
     patch:
-      operationId: api_v1_employees_partial_update
+      operationId: employees_partial_update
       parameters:
       - in: path
         name: id
@@ -443,7 +444,7 @@ paths:
         description: A unique integer value identifying this employee.
         required: true
       tags:
-      - api
+      - employees
       requestBody:
         content:
           application/json:
@@ -466,7 +467,7 @@ paths:
           description: ''
   /api/v1/employees/{id}/role/:
     post:
-      operationId: api_v1_employees_role_create
+      operationId: employees_role_create
       parameters:
       - in: path
         name: id
@@ -475,7 +476,7 @@ paths:
         description: A unique integer value identifying this employee.
         required: true
       tags:
-      - api
+      - employees
       requestBody:
         content:
           application/json:
@@ -499,7 +500,7 @@ paths:
           description: ''
   /api/v1/holidays/:
     get:
-      operationId: api_v1_holidays_list
+      operationId: holidays_list
       parameters:
       - name: page
         required: false
@@ -508,7 +509,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - holidays
       security:
       - jwtAuth: []
       responses:
@@ -519,9 +520,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedHolidayList'
           description: ''
     post:
-      operationId: api_v1_holidays_create
+      operationId: holidays_create
       tags:
-      - api
+      - holidays
       requestBody:
         content:
           application/json:
@@ -545,7 +546,7 @@ paths:
           description: ''
   /api/v1/holidays/{id}/:
     get:
-      operationId: api_v1_holidays_retrieve
+      operationId: holidays_retrieve
       parameters:
       - in: path
         name: id
@@ -554,7 +555,7 @@ paths:
         description: A unique integer value identifying this holiday.
         required: true
       tags:
-      - api
+      - holidays
       security:
       - jwtAuth: []
       responses:
@@ -565,7 +566,7 @@ paths:
                 $ref: '#/components/schemas/Holiday'
           description: ''
     delete:
-      operationId: api_v1_holidays_destroy
+      operationId: holidays_destroy
       parameters:
       - in: path
         name: id
@@ -574,7 +575,7 @@ paths:
         description: A unique integer value identifying this holiday.
         required: true
       tags:
-      - api
+      - holidays
       security:
       - jwtAuth: []
       responses:
@@ -582,7 +583,7 @@ paths:
           description: No response body
   /api/v1/leave-requests/:
     get:
-      operationId: api_v1_leave_requests_list
+      operationId: leave_requests_list
       parameters:
       - name: page
         required: false
@@ -591,7 +592,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - leave-requests
       security:
       - jwtAuth: []
       responses:
@@ -602,9 +603,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedLeaveList'
           description: ''
     post:
-      operationId: api_v1_leave_requests_create
+      operationId: leave_requests_create
       tags:
-      - api
+      - leave-requests
       requestBody:
         content:
           application/json:
@@ -628,7 +629,7 @@ paths:
           description: ''
   /api/v1/leave-requests/{id}/:
     get:
-      operationId: api_v1_leave_requests_retrieve
+      operationId: leave_requests_retrieve
       parameters:
       - in: path
         name: id
@@ -637,7 +638,7 @@ paths:
         description: A unique integer value identifying this leave request.
         required: true
       tags:
-      - api
+      - leave-requests
       security:
       - jwtAuth: []
       responses:
@@ -649,7 +650,7 @@ paths:
           description: ''
   /api/v1/leave-requests/{id}/cancel/:
     post:
-      operationId: api_v1_leave_requests_cancel_create
+      operationId: leave_requests_cancel_create
       parameters:
       - in: path
         name: id
@@ -658,7 +659,7 @@ paths:
         description: A unique integer value identifying this leave request.
         required: true
       tags:
-      - api
+      - leave-requests
       security:
       - jwtAuth: []
       responses:
@@ -670,7 +671,7 @@ paths:
           description: ''
   /api/v1/leave-requests/{id}/review/:
     post:
-      operationId: api_v1_leave_requests_review_create
+      operationId: leave_requests_review_create
       parameters:
       - in: path
         name: id
@@ -679,7 +680,7 @@ paths:
         description: A unique integer value identifying this leave request.
         required: true
       tags:
-      - api
+      - leave-requests
       requestBody:
         content:
           application/json:
@@ -703,7 +704,7 @@ paths:
           description: ''
   /api/v1/offices/overtime-requests/:
     get:
-      operationId: api_v1_offices_overtime_requests_list
+      operationId: offices_overtime_requests_list
       parameters:
       - name: page
         required: false
@@ -712,7 +713,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - offices
       security:
       - jwtAuth: []
       responses:
@@ -723,9 +724,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedOvertimeList'
           description: ''
     post:
-      operationId: api_v1_offices_overtime_requests_create
+      operationId: offices_overtime_requests_create
       tags:
-      - api
+      - offices
       requestBody:
         content:
           application/json:
@@ -749,7 +750,7 @@ paths:
           description: ''
   /api/v1/offices/overtime-requests/{id}/:
     get:
-      operationId: api_v1_offices_overtime_requests_retrieve
+      operationId: offices_overtime_requests_retrieve
       parameters:
       - in: path
         name: id
@@ -758,7 +759,7 @@ paths:
         description: A unique integer value identifying this overtime request.
         required: true
       tags:
-      - api
+      - offices
       security:
       - jwtAuth: []
       responses:
@@ -770,7 +771,7 @@ paths:
           description: ''
   /api/v1/offices/overtime-requests/{id}/cancel/:
     post:
-      operationId: api_v1_offices_overtime_requests_cancel_create
+      operationId: offices_overtime_requests_cancel_create
       parameters:
       - in: path
         name: id
@@ -779,7 +780,7 @@ paths:
         description: A unique integer value identifying this overtime request.
         required: true
       tags:
-      - api
+      - offices
       security:
       - jwtAuth: []
       responses:
@@ -791,7 +792,7 @@ paths:
           description: ''
   /api/v1/offices/overtime-requests/{id}/review/:
     post:
-      operationId: api_v1_offices_overtime_requests_review_create
+      operationId: offices_overtime_requests_review_create
       parameters:
       - in: path
         name: id
@@ -800,7 +801,7 @@ paths:
         description: A unique integer value identifying this overtime request.
         required: true
       tags:
-      - api
+      - offices
       requestBody:
         content:
           application/json:
@@ -824,7 +825,7 @@ paths:
           description: ''
   /api/v1/offices/timesheet-entries/{id}/:
     get:
-      operationId: api_v1_offices_timesheet_entries_retrieve
+      operationId: offices_timesheet_entries_retrieve
       parameters:
       - in: path
         name: id
@@ -833,7 +834,7 @@ paths:
         description: A unique integer value identifying this timesheet entry.
         required: true
       tags:
-      - api
+      - offices
       security:
       - jwtAuth: []
       responses:
@@ -844,7 +845,7 @@ paths:
                 $ref: '#/components/schemas/Entry'
           description: ''
     put:
-      operationId: api_v1_offices_timesheet_entries_update
+      operationId: offices_timesheet_entries_update
       parameters:
       - in: path
         name: id
@@ -853,7 +854,7 @@ paths:
         description: A unique integer value identifying this timesheet entry.
         required: true
       tags:
-      - api
+      - offices
       requestBody:
         content:
           application/json:
@@ -876,7 +877,7 @@ paths:
                 $ref: '#/components/schemas/Entry'
           description: ''
     patch:
-      operationId: api_v1_offices_timesheet_entries_partial_update
+      operationId: offices_timesheet_entries_partial_update
       parameters:
       - in: path
         name: id
@@ -885,7 +886,7 @@ paths:
         description: A unique integer value identifying this timesheet entry.
         required: true
       tags:
-      - api
+      - offices
       requestBody:
         content:
           application/json:
@@ -907,7 +908,7 @@ paths:
                 $ref: '#/components/schemas/Entry'
           description: ''
     delete:
-      operationId: api_v1_offices_timesheet_entries_destroy
+      operationId: offices_timesheet_entries_destroy
       parameters:
       - in: path
         name: id
@@ -916,7 +917,7 @@ paths:
         description: A unique integer value identifying this timesheet entry.
         required: true
       tags:
-      - api
+      - offices
       security:
       - jwtAuth: []
       responses:
@@ -924,7 +925,7 @@ paths:
           description: No response body
   /api/v1/offices/timesheets/:
     get:
-      operationId: api_v1_offices_timesheets_list
+      operationId: offices_timesheets_list
       parameters:
       - name: page
         required: false
@@ -933,7 +934,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - offices
       security:
       - jwtAuth: []
       responses:
@@ -944,9 +945,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedTimesheetList'
           description: ''
     post:
-      operationId: api_v1_offices_timesheets_create
+      operationId: offices_timesheets_create
       tags:
-      - api
+      - offices
       requestBody:
         content:
           application/json:
@@ -970,7 +971,7 @@ paths:
           description: ''
   /api/v1/offices/timesheets/{id}/:
     get:
-      operationId: api_v1_offices_timesheets_retrieve
+      operationId: offices_timesheets_retrieve
       parameters:
       - in: path
         name: id
@@ -979,7 +980,7 @@ paths:
         description: A unique integer value identifying this timesheet.
         required: true
       tags:
-      - api
+      - offices
       security:
       - jwtAuth: []
       responses:
@@ -991,7 +992,7 @@ paths:
           description: ''
   /api/v1/offices/timesheets/{id}/cancel/:
     post:
-      operationId: api_v1_offices_timesheets_cancel_create
+      operationId: offices_timesheets_cancel_create
       parameters:
       - in: path
         name: id
@@ -1000,7 +1001,7 @@ paths:
         description: A unique integer value identifying this timesheet.
         required: true
       tags:
-      - api
+      - offices
       security:
       - jwtAuth: []
       responses:
@@ -1012,7 +1013,7 @@ paths:
           description: ''
   /api/v1/offices/timesheets/{id}/entries/:
     post:
-      operationId: api_v1_offices_timesheets_entries_create
+      operationId: offices_timesheets_entries_create
       parameters:
       - in: path
         name: id
@@ -1021,7 +1022,7 @@ paths:
         description: A unique integer value identifying this timesheet.
         required: true
       tags:
-      - api
+      - offices
       requestBody:
         content:
           application/json:
@@ -1045,7 +1046,7 @@ paths:
           description: ''
   /api/v1/offices/timesheets/{id}/review/:
     post:
-      operationId: api_v1_offices_timesheets_review_create
+      operationId: offices_timesheets_review_create
       parameters:
       - in: path
         name: id
@@ -1054,7 +1055,7 @@ paths:
         description: A unique integer value identifying this timesheet.
         required: true
       tags:
-      - api
+      - offices
       requestBody:
         content:
           application/json:
@@ -1078,7 +1079,7 @@ paths:
           description: ''
   /api/v1/offices/timesheets/{id}/submit/:
     post:
-      operationId: api_v1_offices_timesheets_submit_create
+      operationId: offices_timesheets_submit_create
       parameters:
       - in: path
         name: id
@@ -1087,7 +1088,7 @@ paths:
         description: A unique integer value identifying this timesheet.
         required: true
       tags:
-      - api
+      - offices
       security:
       - jwtAuth: []
       responses:
@@ -1099,7 +1100,7 @@ paths:
           description: ''
   /api/v1/payroll/pay-runs/:
     get:
-      operationId: api_v1_payroll_pay_runs_list
+      operationId: payroll_pay_runs_list
       parameters:
       - name: page
         required: false
@@ -1108,7 +1109,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - payroll
       security:
       - jwtAuth: []
       responses:
@@ -1119,9 +1120,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedPayRunList'
           description: ''
     post:
-      operationId: api_v1_payroll_pay_runs_create
+      operationId: payroll_pay_runs_create
       tags:
-      - api
+      - payroll
       requestBody:
         content:
           application/json:
@@ -1145,7 +1146,7 @@ paths:
           description: ''
   /api/v1/payroll/pay-runs/{id}/:
     get:
-      operationId: api_v1_payroll_pay_runs_retrieve
+      operationId: payroll_pay_runs_retrieve
       parameters:
       - in: path
         name: id
@@ -1154,7 +1155,7 @@ paths:
         description: A unique integer value identifying this pay run.
         required: true
       tags:
-      - api
+      - payroll
       security:
       - jwtAuth: []
       responses:
@@ -1165,7 +1166,7 @@ paths:
                 $ref: '#/components/schemas/PayRun'
           description: ''
     delete:
-      operationId: api_v1_payroll_pay_runs_destroy
+      operationId: payroll_pay_runs_destroy
       parameters:
       - in: path
         name: id
@@ -1174,7 +1175,7 @@ paths:
         description: A unique integer value identifying this pay run.
         required: true
       tags:
-      - api
+      - payroll
       security:
       - jwtAuth: []
       responses:
@@ -1182,7 +1183,7 @@ paths:
           description: No response body
   /api/v1/payroll/pay-runs/{id}/lock/:
     post:
-      operationId: api_v1_payroll_pay_runs_lock_create
+      operationId: payroll_pay_runs_lock_create
       parameters:
       - in: path
         name: id
@@ -1191,7 +1192,7 @@ paths:
         description: A unique integer value identifying this pay run.
         required: true
       tags:
-      - api
+      - payroll
       security:
       - jwtAuth: []
       responses:
@@ -1203,7 +1204,7 @@ paths:
           description: ''
   /api/v1/payroll/pay-runs/{id}/recalculate/:
     post:
-      operationId: api_v1_payroll_pay_runs_recalculate_create
+      operationId: payroll_pay_runs_recalculate_create
       parameters:
       - in: path
         name: id
@@ -1212,7 +1213,7 @@ paths:
         description: A unique integer value identifying this pay run.
         required: true
       tags:
-      - api
+      - payroll
       security:
       - jwtAuth: []
       responses:
@@ -1224,7 +1225,7 @@ paths:
           description: ''
   /api/v1/payroll/payslips/:
     get:
-      operationId: api_v1_payroll_payslips_list
+      operationId: payroll_payslips_list
       parameters:
       - in: query
         name: employee
@@ -1243,7 +1244,7 @@ paths:
           type: integer
         description: Pay run ID
       tags:
-      - api
+      - payroll
       security:
       - jwtAuth: []
       responses:
@@ -1255,7 +1256,7 @@ paths:
           description: ''
   /api/v1/payroll/payslips/{id}/:
     get:
-      operationId: api_v1_payroll_payslips_retrieve
+      operationId: payroll_payslips_retrieve
       parameters:
       - in: path
         name: id
@@ -1264,7 +1265,7 @@ paths:
         description: A unique integer value identifying this payslip.
         required: true
       tags:
-      - api
+      - payroll
       security:
       - jwtAuth: []
       responses:
@@ -1276,7 +1277,7 @@ paths:
           description: ''
   /api/v1/payroll/salary-structures/:
     get:
-      operationId: api_v1_payroll_salary_structures_list
+      operationId: payroll_salary_structures_list
       parameters:
       - in: query
         name: employee
@@ -1290,7 +1291,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - payroll
       security:
       - jwtAuth: []
       responses:
@@ -1301,9 +1302,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedSalaryStructureList'
           description: ''
     post:
-      operationId: api_v1_payroll_salary_structures_create
+      operationId: payroll_salary_structures_create
       tags:
-      - api
+      - payroll
       requestBody:
         content:
           application/json:
@@ -1327,7 +1328,7 @@ paths:
           description: ''
   /api/v1/payroll/salary-structures/{id}/:
     get:
-      operationId: api_v1_payroll_salary_structures_retrieve
+      operationId: payroll_salary_structures_retrieve
       parameters:
       - in: path
         name: id
@@ -1336,7 +1337,7 @@ paths:
         description: A unique integer value identifying this salary structure.
         required: true
       tags:
-      - api
+      - payroll
       security:
       - jwtAuth: []
       responses:
@@ -1347,7 +1348,7 @@ paths:
                 $ref: '#/components/schemas/SalaryStructure'
           description: ''
     delete:
-      operationId: api_v1_payroll_salary_structures_destroy
+      operationId: payroll_salary_structures_destroy
       parameters:
       - in: path
         name: id
@@ -1356,7 +1357,7 @@ paths:
         description: A unique integer value identifying this salary structure.
         required: true
       tags:
-      - api
+      - payroll
       security:
       - jwtAuth: []
       responses:
@@ -1364,7 +1365,7 @@ paths:
           description: No response body
   /api/v1/reports/attendance-summary/:
     get:
-      operationId: api_v1_reports_attendance_summary_retrieve
+      operationId: reports_attendance_summary_retrieve
       parameters:
       - in: query
         name: department
@@ -1386,7 +1387,7 @@ paths:
           minimum: 2000
         required: true
       tags:
-      - api
+      - reports
       security:
       - jwtAuth: []
       responses:
@@ -1398,7 +1399,7 @@ paths:
           description: ''
   /api/v1/reports/headcount/:
     get:
-      operationId: api_v1_reports_headcount_retrieve
+      operationId: reports_headcount_retrieve
       parameters:
       - in: query
         name: date
@@ -1406,7 +1407,7 @@ paths:
           type: string
           format: date
       tags:
-      - api
+      - reports
       security:
       - jwtAuth: []
       responses:
@@ -1418,7 +1419,7 @@ paths:
           description: ''
   /api/v1/reports/payroll-register/:
     get:
-      operationId: api_v1_reports_payroll_register_retrieve
+      operationId: reports_payroll_register_retrieve
       parameters:
       - in: query
         name: month
@@ -1435,7 +1436,7 @@ paths:
           minimum: 2000
         required: true
       tags:
-      - api
+      - reports
       security:
       - jwtAuth: []
       responses:
@@ -1447,7 +1448,7 @@ paths:
           description: ''
   /api/v1/shift-assignments/:
     get:
-      operationId: api_v1_shift_assignments_list
+      operationId: shift_assignments_list
       parameters:
       - name: page
         required: false
@@ -1456,7 +1457,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - shift-assignments
       security:
       - jwtAuth: []
       responses:
@@ -1467,9 +1468,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedAssignmentList'
           description: ''
     post:
-      operationId: api_v1_shift_assignments_create
+      operationId: shift_assignments_create
       tags:
-      - api
+      - shift-assignments
       requestBody:
         content:
           application/json:
@@ -1493,7 +1494,7 @@ paths:
           description: ''
   /api/v1/shift-assignments/{id}/:
     get:
-      operationId: api_v1_shift_assignments_retrieve
+      operationId: shift_assignments_retrieve
       parameters:
       - in: path
         name: id
@@ -1502,7 +1503,7 @@ paths:
         description: A unique integer value identifying this shift assignment.
         required: true
       tags:
-      - api
+      - shift-assignments
       security:
       - jwtAuth: []
       responses:
@@ -1513,7 +1514,7 @@ paths:
                 $ref: '#/components/schemas/Assignment'
           description: ''
     delete:
-      operationId: api_v1_shift_assignments_destroy
+      operationId: shift_assignments_destroy
       parameters:
       - in: path
         name: id
@@ -1522,7 +1523,7 @@ paths:
         description: A unique integer value identifying this shift assignment.
         required: true
       tags:
-      - api
+      - shift-assignments
       security:
       - jwtAuth: []
       responses:
@@ -1530,7 +1531,7 @@ paths:
           description: No response body
   /api/v1/shifts/:
     get:
-      operationId: api_v1_shifts_list
+      operationId: shifts_list
       parameters:
       - name: page
         required: false
@@ -1539,7 +1540,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - shifts
       security:
       - jwtAuth: []
       responses:
@@ -1550,9 +1551,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedShiftList'
           description: ''
     post:
-      operationId: api_v1_shifts_create
+      operationId: shifts_create
       tags:
-      - api
+      - shifts
       requestBody:
         content:
           application/json:
@@ -1576,7 +1577,7 @@ paths:
           description: ''
   /api/v1/shifts/{id}/:
     get:
-      operationId: api_v1_shifts_retrieve
+      operationId: shifts_retrieve
       parameters:
       - in: path
         name: id
@@ -1585,7 +1586,7 @@ paths:
         description: A unique integer value identifying this shift.
         required: true
       tags:
-      - api
+      - shifts
       security:
       - jwtAuth: []
       responses:
@@ -1596,7 +1597,7 @@ paths:
                 $ref: '#/components/schemas/Shift'
           description: ''
     put:
-      operationId: api_v1_shifts_update
+      operationId: shifts_update
       parameters:
       - in: path
         name: id
@@ -1605,7 +1606,7 @@ paths:
         description: A unique integer value identifying this shift.
         required: true
       tags:
-      - api
+      - shifts
       requestBody:
         content:
           application/json:
@@ -1628,7 +1629,7 @@ paths:
                 $ref: '#/components/schemas/Shift'
           description: ''
     patch:
-      operationId: api_v1_shifts_partial_update
+      operationId: shifts_partial_update
       parameters:
       - in: path
         name: id
@@ -1637,7 +1638,7 @@ paths:
         description: A unique integer value identifying this shift.
         required: true
       tags:
-      - api
+      - shifts
       requestBody:
         content:
           application/json:
@@ -1659,7 +1660,7 @@ paths:
                 $ref: '#/components/schemas/Shift'
           description: ''
     delete:
-      operationId: api_v1_shifts_destroy
+      operationId: shifts_destroy
       parameters:
       - in: path
         name: id
@@ -1668,7 +1669,7 @@ paths:
         description: A unique integer value identifying this shift.
         required: true
       tags:
-      - api
+      - shifts
       security:
       - jwtAuth: []
       responses:
@@ -1676,7 +1677,7 @@ paths:
           description: No response body
   /api/v1/staff-activity/:
     get:
-      operationId: api_v1_staff_activity_list
+      operationId: staff_activity_list
       parameters:
       - name: page
         required: false
@@ -1685,7 +1686,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - staff-activity
       security:
       - jwtAuth: []
       responses:
@@ -1697,7 +1698,7 @@ paths:
           description: ''
   /api/v1/staff-activity/{id}/:
     get:
-      operationId: api_v1_staff_activity_retrieve
+      operationId: staff_activity_retrieve
       parameters:
       - in: path
         name: id
@@ -1706,7 +1707,7 @@ paths:
         description: A unique integer value identifying this staff activity.
         required: true
       tags:
-      - api
+      - staff-activity
       security:
       - jwtAuth: []
       responses:
@@ -1822,6 +1823,14 @@ components:
     AttendanceRow:
       type: object
       properties:
+        employee:
+          type: integer
+        employee_number:
+          type: string
+        name:
+          type: string
+        department:
+          type: string
         scheduled_days:
           type: integer
         present:
@@ -1838,14 +1847,6 @@ components:
           type: integer
         worked_seconds:
           type: integer
-        employee:
-          type: integer
-        employee_number:
-          type: string
-        name:
-          type: string
-        department:
-          type: string
       required:
       - absent
       - department
@@ -2062,8 +2063,19 @@ components:
       properties:
         status:
           type: string
+        version:
+          type: string
+        revision:
+          type: string
+        demo_until:
+          type: string
+          format: date
+          nullable: true
       required:
+      - demo_until
+      - revision
       - status
+      - version
     Holiday:
       type: object
       properties:
@@ -2807,6 +2819,20 @@ components:
     RegisterRow:
       type: object
       properties:
+        employee:
+          type: integer
+        employee_number:
+          type: string
+        name:
+          type: string
+        department:
+          type: string
+        payslip:
+          type: integer
+        payable_days:
+          type: integer
+        overtime_seconds:
+          type: integer
         base_pay:
           type: string
           format: decimal
@@ -2819,20 +2845,6 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
-        payslip:
-          type: integer
-        employee:
-          type: integer
-        employee_number:
-          type: string
-        name:
-          type: string
-        department:
-          type: string
-        payable_days:
-          type: integer
-        overtime_seconds:
-          type: integer
       required:
       - base_pay
       - department

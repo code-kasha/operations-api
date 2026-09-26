@@ -1,10 +1,10 @@
 # API reference
 
-The generated contract is [schema.yml](../schema.yml). Interactive docs are at `/api/docs/` and `/api/redoc/`; raw schema is at `/api/schema/`.
+The generated contract is [schema.yml](../schema.yml). Interactive docs are at `/api/docs/` and `/api/redoc/`; raw schema is at `/api/schema/`. Operations are grouped by resource (the path segment after `/api/v1/`).
 
 | Method | Path | Behavior |
 | --- | --- | --- |
-| GET | `/health/` | Public database probe; 200 with `{"status":"ok"}`, or 503 with `{"status":"unavailable"}`. |
+| GET | `/health/` | Public database probe: 200 with `status` `ok`, or 503 with `unavailable`, plus `version`, `revision` (the commit served, if known) and `demo_until` (a hosted demo's end date, otherwise `null`). |
 | POST | `/api/v1/auth/token/` | Exchange `username` and `password` for `access` and `refresh`. |
 | POST | `/api/v1/auth/token/refresh/` | Exchange `refresh` for a new token pair; old refresh is blacklisted. |
 | POST | `/api/v1/auth/logout/` | Blacklist the supplied `refresh`; returns 200. |

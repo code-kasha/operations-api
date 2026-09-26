@@ -34,3 +34,119 @@ jobs:
             sleep 2
           done
           exit 1
+  publish:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: checks
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Tag matches the package version
+        shell: bash
+        run: |
+          version=$(sed -n 's/^version = "\(.*\)"$/\1/p' pyproject.toml)
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match version $version in pyproject.toml"
+            exit 1
+          fi
+      - uses: docker/setup-qemu-action@v4.4.0
+      - uses: docker/setup-buildx-action@v4.4.1
+      - uses: docker/login-action@v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Image name
+        id: image
+        shell: bash
+        run: echo "name=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+      - uses: docker/build-push-action@v7.4.0
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ steps.image.outputs.name }}:${{ github.ref_name }}
+            ${{ steps.image.outputs.name }}:latest
+          labels: |
+            org.opencontainers.image.version=${{ github.ref_name }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          # The package page reads these from the multi-platform index.
+          annotations: |
+            index:org.opencontainers.image.description=Staff operations API for one organisation: staff, attendance, office timesheets, payroll and reports. Django + PostgreSQL. Fictional data only.
+            index:org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            index:org.opencontainers.image.licenses=MIT
+  release:
+    # Only after every check has passed and the image is published.
+    needs: publish
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Release assets
+        shell: bash
+        run: |
+          mkdir dist
+          cp schema.yml "dist/operations-api-${GITHUB_REF_NAME}-openapi.yml"
+          (cd dist && sha256sum -- * > SHA256SUMS && cat SHA256SUMS)
+      - name: Release notes from CHANGELOG.md
+        shell: bash
+        run: |
+          awk -v heading="## ${GITHUB_REF_NAME#v} " 'index($0, heading) == 1 {found=1; next} /^## / {found=0} found' CHANGELOG.md > notes.md
+          test -s notes.md || { echo "::error::No CHANGELOG.md entry for ${GITHUB_REF_NAME#v}"; exit 1; }
+      - name: Create the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --verify-tag --title "operations-api $GITHUB_REF_NAME" --notes-file notes.md
+  deploy:
+    # The hosted demo: redeploy it after the checks pass on main. It needs DEMO_URL (a repository or
+    # production-environment variable, or a secret) and the DEPLOY_HOOK_URL secret; without them the
+    # job only notes that the demo is not set up (see docs/deployment.md).
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: checks
+    runs-on: ubuntu-24.04
+    environment:
+      name: production
+      url: ${{ steps.config.outputs.url }}
+    concurrency:
+      group: production
+      cancel-in-progress: false
+    steps:
+      - name: Check the demo is set up
+        id: config
+        env:
+          DEMO_URL: ${{ vars.DEMO_URL || secrets.DEMO_URL }}
+          DEPLOY_HOOK_URL: ${{ secrets.DEPLOY_HOOK_URL }}
+        shell: bash
+        run: |
+          if [ -z "$DEMO_URL" ] || [ -z "$DEPLOY_HOOK_URL" ]; then
+            echo "::notice::No demo to deploy: set DEMO_URL and the DEPLOY_HOOK_URL secret to enable it."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+            echo "url=${DEMO_URL%/}" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Trigger the deploy
+        if: steps.config.outputs.enabled == 'true'
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.DEPLOY_HOOK_URL }}
+        run: curl -fsS -X POST "$DEPLOY_HOOK_URL" > /dev/null
+      - name: Wait until the demo serves this commit
+        if: steps.config.outputs.enabled == 'true'
+        env:
+          DEMO_URL: ${{ steps.config.outputs.url }}
+        shell: bash
+        run: |
+          for attempt in $(seq 1 60); do
+            if body=$(curl -fsS --max-time 30 "$DEMO_URL/health/") &&
+              python3 -c 'import json, sys; sys.exit(json.loads(sys.argv[1]).get("revision") != sys.argv[2])' "$body" "$GITHUB_SHA"; then
+              echo "Live: $body"
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::error::$DEMO_URL did not report revision $GITHUB_SHA within 15 minutes"
+          exit 1

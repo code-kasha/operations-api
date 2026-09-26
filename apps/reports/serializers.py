@@ -33,11 +33,16 @@ class AttendanceCountsSerializer(serializers.Serializer):
     worked_seconds = serializers.IntegerField()
 
 
-class AttendanceRowSerializer(AttendanceCountsSerializer):
+class EmployeeColumnsSerializer(serializers.Serializer):
     employee = serializers.IntegerField()
     employee_number = serializers.CharField()
     name = serializers.CharField()
     department = serializers.CharField()
+
+
+# DRF lists fields from the leftmost base first, so employee columns lead each row.
+class AttendanceRowSerializer(EmployeeColumnsSerializer, AttendanceCountsSerializer):
+    pass
 
 
 class AttendanceSummarySerializer(serializers.Serializer):
@@ -53,14 +58,14 @@ class MoneySerializer(serializers.Serializer):
     gross_pay = serializers.DecimalField(max_digits=14, decimal_places=2)
 
 
-class RegisterRowSerializer(MoneySerializer):
+class PayslipColumnsSerializer(EmployeeColumnsSerializer):
     payslip = serializers.IntegerField()
-    employee = serializers.IntegerField()
-    employee_number = serializers.CharField()
-    name = serializers.CharField()
-    department = serializers.CharField()
     payable_days = serializers.IntegerField()
     overtime_seconds = serializers.IntegerField()
+
+
+class RegisterRowSerializer(PayslipColumnsSerializer, MoneySerializer):
+    pass
 
 
 class RegisterTotalsSerializer(MoneySerializer):

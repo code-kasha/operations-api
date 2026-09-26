@@ -9,6 +9,7 @@
 - A custom `accounts.User` exists before the first migration so employee and role models can evolve without replacing Django's auth table later.
 - JWT authentication and employee-based business roles are implemented. Django's admin permissions are separate from operations roles; superusers can bootstrap an operations admin. See [permissions](permissions.md).
 - Development is the management-command default; WSGI/ASGI and the container default to production.
+- A hosted demo sets `DEMO_UNTIL`; only then may `reset_demo` erase and reload the fictional data.
 
 ## Implementation conventions
 

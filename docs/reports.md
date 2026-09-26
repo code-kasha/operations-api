@@ -66,3 +66,11 @@ reject back-dated changes. Try these next steps in Swagger:
 
 The demo accounts are ordinary users without Django admin access; use
 `createsuperuser` for the admin site.
+
+### Resetting a hosted demo
+
+`python manage.py reset_demo --password '…'` erases **every record** and loads fresh
+sample data, in one transaction: if loading fails, the previous data remains. It
+runs only when the `DEMO_UNTIL` setting is present, so it cannot run on an ordinary
+installation. The hosted demo runs it on every start; see
+[deployment](deployment.md#hosted-demo).
