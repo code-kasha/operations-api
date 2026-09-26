@@ -4,6 +4,7 @@ The generated contract is [schema.yml](../schema.yml). Interactive docs are at `
 
 | Method | Path | Behavior |
 | --- | --- | --- |
+| GET | `/` | Redirects to Swagger UI at `/api/docs/`. |
 | GET | `/health/` | Public database probe: 200 with `status` `ok`, or 503 with `unavailable`, plus `version`, `revision` (the commit served, if known) and `demo_until` (a hosted demo's end date, otherwise `null`). |
 | POST | `/api/v1/auth/token/` | Exchange `username` and `password` for `access` and `refresh`. |
 | POST | `/api/v1/auth/token/refresh/` | Exchange `refresh` for a new token pair; old refresh is blacklisted. |

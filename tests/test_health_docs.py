@@ -31,6 +31,12 @@ def test_health_hides_database_errors(client):
     assert "private detail" not in str(response.data)
 
 
+def test_root_opens_the_api_documentation(client):
+    response = client.get("/")
+    assert response.status_code == 302
+    assert response["Location"] == "/api/docs/"
+
+
 @pytest.mark.parametrize("path", ["/api/schema/", "/api/docs/", "/api/redoc/", "/admin/login/"])
 def test_documentation_and_admin_available(client, path):
     assert client.get(path).status_code == 200

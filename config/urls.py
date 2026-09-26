@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import RedirectView
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
@@ -10,6 +11,8 @@ from apps.accounts.views import LoginView, LogoutView, MeView, RefreshView
 from config.views import HealthView
 
 urlpatterns = [
+    # API only: the site root opens the interactive documentation.
+    path("", RedirectView.as_view(pattern_name="swagger-ui"), name="root"),
     path("api/v1/offices/", include("apps.offices.urls")),
     path("api/v1/payroll/", include("apps.payroll.urls")),
     path("api/v1/reports/", include("apps.reports.urls")),
