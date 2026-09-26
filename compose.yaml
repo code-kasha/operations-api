@@ -1,0 +1,9 @@
+services:
+  api:
+    build: .
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.development
+    ports:
+      - "127.0.0.1:8000:8000"
+    command: sh -c "python manage.py migrate --noinput && exec gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 1 --access-logfile -"
+    # Disposable local demo. Use Python quick start for a persistent local database.

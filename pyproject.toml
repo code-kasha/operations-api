@@ -1,0 +1,37 @@
+[project]
+name = "operations-api"
+version = "0.1.0"
+description = "Staff operations API for a single organisation."
+requires-python = ">=3.13,<3.14"
+license = "MIT"
+dependencies = [
+  "django>=5.2,<5.3",
+  "djangorestframework>=3.16,<4",
+  "djangorestframework-simplejwt>=5.5,<6",
+  "drf-spectacular[sidecar]>=0.28,<1",
+  "dj-database-url>=3,<4",
+  "psycopg[binary]>=3.2,<4",
+  "whitenoise>=6.9,<7",
+  "gunicorn>=23; sys_platform != 'win32'",
+]
+
+[dependency-groups]
+dev = ["ruff>=0.11", "pytest>=8", "pytest-django>=4.10"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+"config/settings/*.py" = ["F403", "F405"]
+"**/migrations/*.py" = ["E501"]
