@@ -9,5 +9,6 @@ Read `agent-start.md` and `docs/architecture.md` before working on this project.
 - First release is core + offices, as selected by Akash. Follow `docs/roadmap.md`;
   ask before changing this scope or assigning later sector releases.
 - Commit locally; never push or open a PR without an explicit request in that message.
-- End agent-assisted commit messages with `Assisted-by: OpenAI Codex`.
+- End agent-assisted commit messages with both `Assisted-by: OpenAI Codex` and the
+  `Co-Authored-By:` line for Claude from the session instructions.
 - Follow the check commands in `README.md`; keep migrations and `schema.yml` current.
