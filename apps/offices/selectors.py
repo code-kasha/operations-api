@@ -20,11 +20,21 @@ def timesheet_seconds(timesheet):
     }
 
 
-def approved_overtime_seconds(*, employee, start_date, end_date):
-    """Future payroll input, grouped by assignment start date; no monetary calculation."""
+def approved_overtime_requests(*, employee, end_date, start_date=None):
+    """Payroll input: approved requests grouped by assignment start date."""
     requests = OvertimeRequest.objects.filter(
         timesheet__attendance__assignment__employee=employee,
-        timesheet__attendance__assignment__date__range=(start_date, end_date),
+        timesheet__attendance__assignment__date__lte=end_date,
         status=OvertimeStatus.APPROVED,
+    )
+    if start_date:
+        requests = requests.filter(timesheet__attendance__assignment__date__gte=start_date)
+    return requests
+
+
+def approved_overtime_seconds(*, employee, start_date, end_date):
+    """Approved seconds for an inclusive assignment-date range; no monetary calculation."""
+    requests = approved_overtime_requests(
+        employee=employee, start_date=start_date, end_date=end_date
     )
     return sum(int((row.ends_at - row.starts_at).total_seconds()) for row in requests)

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Add immutable salary structures with a per-employee overtime method: multiplier of a derived hourly rate, or flat hourly rate.
+- Add monthly pay runs with working-day pro-rating for joiners, leavers, absences, and unpaid leave; paise rounding; and draft recalculation.
+- Pay approved office overtime once, with source links; lock finished runs; show employees only their own locked payslips.
+- Document payroll rules, limits, and ideas for a fuller version.
+
 - Add office timesheet drafts, recorded task intervals, submission, review, and withdrawal.
 - Add separate overtime approval with recorded-work coverage and overlap checks; approved work is immutable.
 - Enforce office-sector access, reuse scoped reviewer permissions, and document approved overtime as a future payroll input.

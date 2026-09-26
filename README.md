@@ -4,7 +4,7 @@ A Django REST API foundation for staff operations in schools, clinics, and small
 
 [API reference](docs/api.md) · [Deployment](docs/deployment.md) · [Contributing](CONTRIBUTING.md) · [MIT licence](LICENSE)
 
-**Status: staff, attendance, leave, and office operations implemented; under development.** No release or hosted demo exists yet.
+**Status: staff, attendance, leave, office operations, and basic payroll implemented; under development.** No release or hosted demo exists yet.
 
 Available now:
 
@@ -15,11 +15,12 @@ Available now:
 - Dated shifts (including overnight work), holidays, and server-timed check-in/check-out.
 - Whole-day paid/unpaid leave, department-scoped reviews, and no self-approval.
 - Office timesheet drafts, task intervals, submission/review, and separate overtime approvals.
+- Monthly gross pay: salary structures, working-day pro-rating for absence and unpaid leave, multiplier or flat-rate overtime, and lockable pay runs.
 - Swagger UI, ReDoc, and a committed OpenAPI schema.
 - Database health endpoint, SQLite development/tests, PostgreSQL production settings.
 - Locked uv environment, Docker image definition, and GitHub Actions checks.
 
-Still planned for v1.0.0: payroll, reports, fictional sample data, and release preparation. Schools and clinics follow later. These features are not implemented. Payroll does not currently calculate salaries or provide statutory compliance (including PF, ESI, or TDS). The clinic module will cover staff only, with no patient or medical records. Read the [attendance rules](docs/attendance.md), [office rules](docs/offices.md), and [implementation plan](docs/roadmap.md).
+Still planned for v1.0.0: reports, fictional sample data, and release preparation. Schools and clinics follow later. These features are not implemented. Payroll calculates gross pay only: no deductions, net pay, or statutory compliance (including PF, ESI, or TDS). The clinic module will cover staff only, with no patient or medical records. Read the [attendance rules](docs/attendance.md), [office rules](docs/offices.md), [payroll rules](docs/payroll.md), and [implementation plan](docs/roadmap.md).
 
 ## Quick start
 

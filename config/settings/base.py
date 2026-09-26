@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "apps.staff",
     "apps.attendance",
     "apps.offices",
+    "apps.payroll",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -44,6 +45,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+# Payroll-only calendar: Monday=0. Attendance still has no implicit working week.
+PAYROLL_WORKING_WEEKDAYS = (0, 1, 2, 3, 4)
+PAYROLL_STANDARD_DAY_HOURS = 8
 ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"

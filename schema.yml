@@ -1097,6 +1097,271 @@ paths:
               schema:
                 $ref: '#/components/schemas/Timesheet'
           description: ''
+  /api/v1/payroll/pay-runs/:
+    get:
+      operationId: api_v1_payroll_pay_runs_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPayRunList'
+          description: ''
+    post:
+      operationId: api_v1_payroll_pay_runs_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayRun'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PayRun'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PayRun'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayRun'
+          description: ''
+  /api/v1/payroll/pay-runs/{id}/:
+    get:
+      operationId: api_v1_payroll_pay_runs_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this pay run.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayRun'
+          description: ''
+    delete:
+      operationId: api_v1_payroll_pay_runs_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this pay run.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/payroll/pay-runs/{id}/lock/:
+    post:
+      operationId: api_v1_payroll_pay_runs_lock_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this pay run.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayRun'
+          description: ''
+  /api/v1/payroll/pay-runs/{id}/recalculate/:
+    post:
+      operationId: api_v1_payroll_pay_runs_recalculate_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this pay run.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayRun'
+          description: ''
+  /api/v1/payroll/payslips/:
+    get:
+      operationId: api_v1_payroll_payslips_list
+      parameters:
+      - in: query
+        name: employee
+        schema:
+          type: integer
+        description: Employee ID
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: pay_run
+        schema:
+          type: integer
+        description: Pay run ID
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPayslipList'
+          description: ''
+  /api/v1/payroll/payslips/{id}/:
+    get:
+      operationId: api_v1_payroll_payslips_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this payslip.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payslip'
+          description: ''
+  /api/v1/payroll/salary-structures/:
+    get:
+      operationId: api_v1_payroll_salary_structures_list
+      parameters:
+      - in: query
+        name: employee
+        schema:
+          type: integer
+        description: Employee ID
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSalaryStructureList'
+          description: ''
+    post:
+      operationId: api_v1_payroll_salary_structures_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SalaryStructure'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SalaryStructure'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SalaryStructure'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalaryStructure'
+          description: ''
+  /api/v1/payroll/salary-structures/{id}/:
+    get:
+      operationId: api_v1_payroll_salary_structures_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this salary structure.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalaryStructure'
+          description: ''
+    delete:
+      operationId: api_v1_payroll_salary_structures_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this salary structure.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/shift-assignments/:
     get:
       operationId: api_v1_shift_assignments_list
@@ -1767,6 +2032,14 @@ components:
       - reason
       - starts_at
       - timesheet
+    OvertimeMethodEnum:
+      enum:
+      - multiplier
+      - flat
+      type: string
+      description: |-
+        * `multiplier` - Multiplier of derived hourly base rate
+        * `flat` - Flat hourly rate
     PaginatedAssignmentList:
       type: object
       required:
@@ -1928,6 +2201,75 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Overtime'
+    PaginatedPayRunList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayRun'
+    PaginatedPayslipList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payslip'
+    PaginatedSalaryStructureList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SalaryStructure'
     PaginatedShiftList:
       type: object
       required:
@@ -2081,6 +2423,157 @@ components:
         end_time:
           type: string
           format: time
+    PayRun:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        year:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        month:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        status:
+          allOf:
+          - $ref: '#/components/schemas/PayRunStatusEnum'
+          readOnly: true
+        standard_working_days:
+          type: integer
+          readOnly: true
+        payslip_count:
+          type: integer
+          readOnly: true
+        created_by:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        calculated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        locked_by:
+          type: integer
+          readOnly: true
+          nullable: true
+        locked_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+      required:
+      - calculated_at
+      - created_at
+      - created_by
+      - id
+      - locked_at
+      - locked_by
+      - month
+      - payslip_count
+      - standard_working_days
+      - status
+      - year
+    PayRunStatusEnum:
+      enum:
+      - draft
+      - locked
+      type: string
+      description: |-
+        * `draft` - Draft
+        * `locked` - Locked
+    Payslip:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        pay_run:
+          type: integer
+          readOnly: true
+        employee:
+          type: integer
+          readOnly: true
+        salary_structure:
+          type: integer
+          readOnly: true
+        monthly_base:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        standard_working_days:
+          type: integer
+          readOnly: true
+        employed_working_days:
+          type: integer
+          readOnly: true
+        absent_days:
+          type: integer
+          readOnly: true
+        unpaid_leave_days:
+          type: integer
+          readOnly: true
+        payable_days:
+          type: integer
+          readOnly: true
+        base_pay:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        overtime_method:
+          allOf:
+          - $ref: '#/components/schemas/OvertimeMethodEnum'
+          readOnly: true
+        overtime_hourly_rate:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        overtime_seconds:
+          type: integer
+          readOnly: true
+        overtime_pay:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        overtime_requests:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+        gross_pay:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+      required:
+      - absent_days
+      - base_pay
+      - employed_working_days
+      - employee
+      - gross_pay
+      - id
+      - monthly_base
+      - overtime_hourly_rate
+      - overtime_method
+      - overtime_pay
+      - overtime_requests
+      - overtime_seconds
+      - pay_run
+      - payable_days
+      - salary_structure
+      - standard_working_days
+      - unpaid_leave_days
     RequestStatusEnum:
       enum:
       - pending
@@ -2122,6 +2615,48 @@ components:
         * `hr` - HR
         * `manager` - Manager
         * `employee` - Employee
+    SalaryStructure:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        employee:
+          type: integer
+        effective_from:
+          type: string
+          format: date
+        monthly_base:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        overtime_method:
+          $ref: '#/components/schemas/OvertimeMethodEnum'
+        overtime_multiplier:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+          nullable: true
+        overtime_hourly_rate:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+        created_by:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - effective_from
+      - employee
+      - id
+      - monthly_base
+      - overtime_method
     Shift:
       type: object
       properties:

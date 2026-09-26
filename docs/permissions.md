@@ -21,6 +21,12 @@ an active employee record cannot access staff data.
 | Read office timesheets/overtime | All | All | Own department | Self |
 | Create/submit/cancel office work | Self with employee record | Self | Self | Self |
 | Review office work (never self) | Other employees | Others except admins | Ordinary employees in own department | No |
+| Read salary structures | All | All | Self | Self |
+| Create/delete salary structures (never self) | Others | Others except admins | No | No |
+| Manage pay runs | Yes | Yes | No | No |
+| Read payslips | All | All | Self, locked runs | Self, locked runs |
+
+Payroll visibility does not follow department scope: managers see only their own pay. See [payroll rules](payroll.md).
 
 Office operations require the office sector. Entries can be changed only by the
 owner while the timesheet is a draft. Approved work is immutable. See

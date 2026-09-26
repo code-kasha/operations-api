@@ -1,7 +1,7 @@
 # Implementation plan
 
 Akash selected **shared core + offices** for the first release, targeting v1.0.0.
-The foundation, staff/permissions, attendance/leave, and office operations are implemented. The remaining steps
+The foundation, staff/permissions, attendance/leave, office operations, and basic payroll are implemented. The remaining steps
 record intended work, not shipped capabilities or a delivery-date commitment.
 
 ## Build order
@@ -19,12 +19,14 @@ record intended work, not shipped capabilities or a delivery-date commitment.
    submission/review, and separate overtime requests. Tests cover ownership,
    approvals, duplicate/overlapping time, and immutable approved work. The
    [office rules](offices.md) document the input and no-double-counting contract
-   for the later payroll implementation.
-4. **Payroll.** Salary structures, monthly pay runs, payslips, and explicit
-   pro-rating rules for leave and absence. Document rounding and overtime
-   treatment. Test calculations, rollback on failure, duplicate-run
-   prevention, and immutable results after locking a finished run. No
-   statutory compliance claims.
+   that payroll follows.
+4. **Payroll — implemented.** Salary structures, monthly pay runs, and payslips
+   with working-day pro-rating (selected by Akash). Overtime is a multiplier or
+   flat rate per structure, since the policy is still undecided. Rounding and
+   overtime rules are in [payroll](payroll.md). Tests cover calculations,
+   rollback, duplicate runs, and locked immutability. Gross pay only; no
+   statutory claims. Fuller-version ideas are in
+   [payroll improvements](payroll-improvements.md).
 5. **Reports and sample data.** Monthly attendance summaries, payroll
    register, and headcount with role-scoped access. Provide an atomic,
    repeatable fictional-data command demonstrating an office workflow.

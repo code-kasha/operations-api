@@ -12,7 +12,7 @@
 
 ## Implementation conventions
 
-Keep views thin. Serializers validate request shape; services perform business mutations in transactions. Role-aware querysets control visibility, with hidden records returning 404. Write activity history only through the service responsible for the associated mutation. Payroll calculations and pay-run locking must be transactionally tested before being advertised.
+Keep views thin. Serializers validate request shape; services perform business mutations in transactions. Role-aware querysets control visibility, with hidden records returning 404. Write activity history only through the service responsible for the associated mutation. Payroll calculations and pay-run locking are transactionally tested; claims stay limited to gross pay.
 
 `apps/staff` implements departments, employee/account links, fixed business roles,
 and staff activity. Services recheck write permissions and lock existing target
@@ -33,7 +33,12 @@ and business rules. Audit events reuse the staff activity stream.
 and separately reviewed overtime. It uses the same calendar lock and audit
 stream. Approved sheets and overtime are immutable; historical rejected/cancelled
 versions remain available. Sector checks are enforced at API and service
-boundaries. See [offices](offices.md) for the planned payroll consumption contract.
+boundaries. See [offices](offices.md) for the payroll consumption contract.
+
+`apps/payroll` adds immutable salary structures, monthly pay runs, and payslip
+snapshots. Calculation lives in `calculations.py`; services wrap generation,
+recalculation, and locking in one transaction under the calendar lock. Paid
+overtime is linked one-to-one to its source request. See [payroll](payroll.md).
 
 Shared core: staff/departments/roles; shifts/attendance/leave/holidays; salary structures/pay runs/payslips; attendance/payroll/headcount reports; permissions and an atomic fictional-data command.
 

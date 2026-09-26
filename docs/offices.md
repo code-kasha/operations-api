@@ -83,15 +83,13 @@ attendance duration is also not an overtime entitlement.
 The split retains up to six decimal places if a shift boundary contains
 fractional seconds; overtime request durations are whole seconds.
 
-`apps.offices.selectors.approved_overtime_seconds` is an internal, read-only input
-for the later payroll implementation. It sums only approved requests for one
-employee and an inclusive range of assignment start dates. An overnight shift
+`apps.offices.selectors.approved_overtime_requests` and `approved_overtime_seconds`
+are internal, read-only payroll inputs. They select only approved requests for one
+employee, grouped by assignment start date. An overnight shift
 starting on the last day of a month belongs entirely to that month, including
 its approved overtime. Pending/rejected/cancelled requests contribute zero.
 
-Payroll must apply a documented rate to approved overtime once, separately from
-base salary. It must not add raw attendance excess, timesheet outside-shift totals,
-and approved requests together: those can describe the same work. When pay runs
-are implemented, retain the source request IDs and prevent a source from being
-paid twice. Those consumption records, rates, money rounding, pay runs, and
-statutory rules are not implemented here.
+Payroll pays approved requests only, separately from base salary. It does not add
+raw attendance excess or timesheet outside-shift totals, which can describe the
+same work. Each paid request is linked to exactly one payslip. See
+[payroll](payroll.md) for rates and rounding.

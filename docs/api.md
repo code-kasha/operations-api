@@ -147,4 +147,34 @@ shift ended at 17:00 and approved entries cover the interval, request overtime:
 Replace IDs and dates with your own completed records. Review the overtime
 request separately; approving a timesheet alone does not approve extra pay.
 
-Payroll, reporting, schools, and clinics remain planned.
+## Payroll API
+
+Read the [payroll rules](payroll.md) for calculations, rounding, and access. Admin/HR
+manage payroll; employees read their own structures and locked payslips.
+
+| Methods | Path | Behavior |
+| --- | --- | --- |
+| GET, POST | `/api/v1/payroll/salary-structures/` | Read visible structures (`?employee=`); admin/HR create one. |
+| GET, DELETE | `/api/v1/payroll/salary-structures/{id}/` | Read; delete only when no payslip uses it. |
+| GET, POST | `/api/v1/payroll/pay-runs/` | Admin/HR list runs or create one with `{"year":2026,"month":10}`. |
+| GET, DELETE | `/api/v1/payroll/pay-runs/{id}/` | Read; delete a draft run. |
+| POST | `/api/v1/payroll/pay-runs/{id}/recalculate/` | Recalculate a draft using `{}`. |
+| POST | `/api/v1/payroll/pay-runs/{id}/lock/` | Lock a draft using `{}`; locked runs are final. |
+| GET | `/api/v1/payroll/payslips/` and `/{id}/` | Read visible payslips (`?pay_run=`, `?employee=`). |
+
+Create a structure with multiplier overtime:
+
+```json
+{
+  "employee": 1,
+  "effective_from": "2026-09-01",
+  "monthly_base": "42000.00",
+  "overtime_method": "multiplier",
+  "overtime_multiplier": "1.50"
+}
+```
+
+For a flat rate, send `"overtime_method": "flat"` and `"overtime_hourly_rate": "300.00"`
+instead of the multiplier. Money is returned as decimal strings.
+
+Reporting, schools, and clinics remain planned.
