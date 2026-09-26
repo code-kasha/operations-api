@@ -13,6 +13,11 @@ an active employee record cannot access staff data.
 | Create/update/delete empty departments | Yes | Yes | No | No |
 | Assign business roles | Yes | No | No | No |
 | Read staff activity | All | All | No | No |
+| Read shifts/holidays | All | All | All | All |
+| Manage shifts/assignments/holidays | Yes | Yes | No | No |
+| Read assignments/attendance/leave | All | All | Own department | Self |
+| Clock in/out, request leave | Self with employee record | Self | Self | Self |
+| Review leave (never self) | Other employees | Others except admins | Ordinary employees in own department | No |
 
 HR cannot edit an operations admin or their own department/active status.
 Operations admins cannot deactivate or change their own role through the API.

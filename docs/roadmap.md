@@ -1,7 +1,7 @@
 # Implementation plan
 
 Akash selected **shared core + offices** for the first release, targeting v1.0.0.
-The foundation and staff/permissions step are implemented. The remaining steps
+The foundation, staff/permissions, and attendance/leave steps are implemented. The remaining steps
 record intended work, not shipped capabilities or a delivery-date commitment.
 
 ## Build order
@@ -11,9 +11,10 @@ record intended work, not shipped capabilities or a delivery-date commitment.
    matrix is documented in [permissions](permissions.md). Tests cover visibility,
    forbidden writes, privilege escalation, and hidden-record 404s. Business roles
    remain distinct from Django admin access; changes are audited in transactions.
-2. **Attendance and leave.** Shifts, check-in/check-out, holidays, leave
-   requests, and approval transitions. Define time-zone, overlap, and
-   absence rules. Test invalid transitions and transactional changes.
+2. **Attendance and leave — implemented.** Shifts, dated assignments,
+   check-in/check-out, holidays, and leave review/cancellation. Time-zone,
+   overlap, absence, and working-day rules are in [attendance](attendance.md),
+   with tests for visibility, transitions, boundaries, and rollback.
 3. **Office operations.** Timesheets, overtime requests, and approvals.
    Define who can approve, prevent self-approval, and prevent duplicate or
    overlapping entries. Specify how approved overtime feeds payroll and

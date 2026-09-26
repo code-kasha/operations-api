@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Add shift templates, dated assignments, holidays, and self-service check-in/check-out.
+- Add paid/unpaid whole-day leave, scoped review and cancellation, and self-approval protection.
+- Preserve schedule snapshots and audit mutations atomically; classify assigned days for later reporting/payroll.
+
 - Add departments, employee records, operations admin/HR/manager/employee roles, and scoped visibility.
 - Add transactional staff services, immutable account links, employment-date constraints, and activity auditing.
 - Restrict role assignment to operations admins and protect privileged records from HR changes.

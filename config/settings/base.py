@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "drf_spectacular_sidecar",
     "apps.accounts",
     "apps.staff",
+    "apps.attendance",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

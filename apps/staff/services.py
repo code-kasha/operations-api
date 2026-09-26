@@ -77,6 +77,10 @@ def create_employee(*, actor, data):
 
 @transaction.atomic
 def update_employee(*, actor, pk, data):
+    from apps.attendance.models import Attendance, ShiftAssignment
+    from apps.attendance.services import lock_calendar
+
+    lock_calendar()
     employee = get_object_or_404(visible_employees(actor).select_for_update(), pk=pk)
     require_role(actor, {Role.ADMIN, Role.HR})
     if "user" in data or "role" in data:
@@ -90,6 +94,19 @@ def update_employee(*, actor, pk, data):
             raise PermissionDenied("HR cannot change their own department.")
     for field, value in data.items():
         setattr(employee, field, value)
+    assignments = ShiftAssignment.objects.filter(employee=employee)
+    if assignments.filter(date__lt=employee.start_date).exists() or (
+        employee.end_date and assignments.filter(date__gt=employee.end_date).exists()
+    ):
+        raise ValidationError("Employment dates cannot exclude existing shift assignments.")
+    if (
+        not employee.is_active
+        and Attendance.objects.filter(
+            assignment__employee=employee,
+            check_out__isnull=True,
+        ).exists()
+    ):
+        raise ValidationError("Close open attendance before deactivating the employee.")
     save_validated(employee)
     record_activity(actor, "employee.updated", employee, data)
     return employee

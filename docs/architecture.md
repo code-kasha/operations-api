@@ -24,6 +24,11 @@ validation and rollback; they do not demonstrate PostgreSQL row-lock concurrency
 
 ## Planned scope
 
+`apps/attendance` implements the single-installation calendar, dated shift
+snapshots, attendance, and leave. Its calendar lock serializes writes and related
+employment-date changes; see [attendance](attendance.md) for the consistency model
+and business rules. Audit events reuse the staff activity stream.
+
 Shared core: staff/departments/roles; shifts/attendance/leave/holidays; salary structures/pay runs/payslips; attendance/payroll/headcount reports; permissions and an atomic fictional-data command.
 
 Sector modules: schools (subjects/timetables/cover), clinics (rosters/on-call/minimum staffing), offices (timesheets/overtime/approvals).

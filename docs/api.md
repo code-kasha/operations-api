@@ -62,4 +62,42 @@ Use PATCH `{"is_active":false}` to deactivate other employees. Operational acces
 is revoked immediately; login is independent. To disable login too, deactivate the
 authentication account in Django admin. There is no fictional-data seed command yet.
 
-Attendance, payroll, reporting, and sector endpoints remain planned.
+## Attendance and leave API
+
+See [attendance rules](attendance.md) for permissions, time boundaries, day
+classification, and transitions. All lists are paginated.
+
+| Methods | Path | Behavior |
+| --- | --- | --- |
+| GET, POST | `/api/v1/shifts/` | Read templates; admin/HR create shifts. |
+| GET, PUT, PATCH, DELETE | `/api/v1/shifts/{id}/` | Read; admin/HR change/delete only while unassigned. |
+| GET, POST | `/api/v1/shift-assignments/` | Read visible schedules; admin/HR assign future shifts. |
+| GET, DELETE | `/api/v1/shift-assignments/{id}/` | Read with `day_status`; admin/HR remove eligible future assignments. |
+| GET, POST | `/api/v1/holidays/` | Read calendar; admin/HR declare future holidays. |
+| GET, DELETE | `/api/v1/holidays/{id}/` | Read; admin/HR remove future holidays. |
+| GET | `/api/v1/attendance/` and `/api/v1/attendance/{id}/` | Read visible attendance. |
+| POST | `/api/v1/attendance/check-in/` | Supply `{"assignment":1}` for your shift; returns 201. |
+| POST | `/api/v1/attendance/{id}/check-out/` | Submit `{}`; close your attendance with server time. |
+| GET, POST | `/api/v1/leave-requests/` | Read visible requests; submit your own. |
+| GET | `/api/v1/leave-requests/{id}/` | Read request, working dates, and review/cancellation metadata. |
+| POST | `/api/v1/leave-requests/{id}/review/` | Reviewer supplies `decision` (`approved`/`rejected`) and optional `note`. |
+| POST | `/api/v1/leave-requests/{id}/cancel/` | Submit `{}` to withdraw/cancel when permitted. |
+
+Create a shift with `{"name":"Fictional office day","start_time":"09:00","end_time":"17:00"}`.
+Assign it with `{"employee":1,"shift":1,"date":"2026-10-05"}`, replacing the IDs
+and using a future date. Scheduling must precede leave submission:
+
+```json
+{
+  "start_date": "2026-10-05",
+  "end_date": "2026-10-06",
+  "leave_type": "paid",
+  "reason": "Fictional personal leave"
+}
+```
+
+Replace dates with future scheduled dates. Employees cannot supply status,
+employee ID, reviewer, or timestamps. Illegal transitions, overlaps, and schedule
+conflicts return 400; forbidden operations on visible records return 403.
+
+Payroll, reporting, and sector endpoints remain planned.

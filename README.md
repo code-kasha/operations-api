@@ -4,7 +4,7 @@ A Django REST API foundation for staff operations in schools, clinics, and small
 
 [API reference](docs/api.md) · [Deployment](docs/deployment.md) · [Contributing](CONTRIBUTING.md) · [MIT licence](LICENSE)
 
-**Status: staff and permissions implemented, under development.** No release or hosted demo exists yet.
+**Status: staff, attendance, and leave implemented, under development.** No release or hosted demo exists yet.
 
 Available now:
 
@@ -12,11 +12,13 @@ Available now:
 - Custom user model and Django admin.
 - Departments and employee records, with operations admin, HR, manager, and employee roles.
 - Role-scoped visibility, transactional staff changes, and a read-only activity trail.
+- Dated shifts (including overnight work), holidays, and server-timed check-in/check-out.
+- Whole-day paid/unpaid leave, department-scoped reviews, and no self-approval.
 - Swagger UI, ReDoc, and a committed OpenAPI schema.
 - Database health endpoint, SQLite development/tests, PostgreSQL production settings.
 - Locked uv environment, Docker image definition, and GitHub Actions checks.
 
-Still planned for v1.0.0: attendance, leave, payroll, reports, fictional sample data, and the office module (timesheets, overtime, approvals). Schools and clinics follow later. These features are not implemented. Payroll does not currently calculate salaries or provide statutory compliance (including PF, ESI, or TDS). The clinic module will cover staff only, with no patient or medical records. See the [implementation plan](docs/roadmap.md).
+Still planned for v1.0.0: payroll, reports, fictional sample data, and the office module (timesheets, overtime, approvals). Schools and clinics follow later. These features are not implemented. Payroll does not currently calculate salaries or provide statutory compliance (including PF, ESI, or TDS). The clinic module will cover staff only, with no patient or medical records. Attendance and leave rules and limitations are in [docs/attendance.md](docs/attendance.md). See the [implementation plan](docs/roadmap.md).
 
 ## Quick start
 
@@ -69,6 +71,7 @@ CI runs these checks on SQLite and builds/smoke-tests the Docker image. A local 
 
 - `apps/accounts/`: authentication identity, admin, and current-user endpoint.
 - `apps/staff/`: departments, employees, business permissions, transactional services, and activity.
+- `apps/attendance/`: shifts, dated assignments, holidays, clocking, and leave review services.
 - `config/settings/`: shared, development, test, and production settings.
 - `tests/`: authentication behavior, health/docs, and production configuration guards.
 - `schema.yml`: generated API contract.
