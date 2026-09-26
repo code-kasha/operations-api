@@ -40,6 +40,11 @@ snapshots. Calculation lives in `calculations.py`; services wrap generation,
 recalculation, and locking in one transaction under the calendar lock. Paid
 overtime is linked one-to-one to its source request. See [payroll](payroll.md).
 
+`apps/reports` builds read-only reports from the owning apps' scoped querysets;
+attendance day classification is shared through `apps.attendance.selectors`, so
+reports, payroll, and the assignment API agree. `apps/sample_data` provides the
+atomic `load_sample_data` command. See [reports](reports.md).
+
 Shared core: staff/departments/roles; shifts/attendance/leave/holidays; salary structures/pay runs/payslips; attendance/payroll/headcount reports; permissions and an atomic fictional-data command.
 
 Sector modules: schools (subjects/timetables/cover), clinics (rosters/on-call/minimum staffing), offices (timesheets/overtime/approvals).

@@ -4,7 +4,7 @@ A Django REST API foundation for staff operations in schools, clinics, and small
 
 [API reference](docs/api.md) · [Deployment](docs/deployment.md) · [Contributing](CONTRIBUTING.md) · [MIT licence](LICENSE)
 
-**Status: staff, attendance, leave, office operations, and basic payroll implemented; under development.** No release or hosted demo exists yet.
+**Status: staff, attendance, leave, office operations, basic payroll, and reports implemented; under development.** No release or hosted demo exists yet.
 
 Available now:
 
@@ -16,11 +16,13 @@ Available now:
 - Whole-day paid/unpaid leave, department-scoped reviews, and no self-approval.
 - Office timesheet drafts, task intervals, submission/review, and separate overtime approvals.
 - Monthly gross pay: salary structures, working-day pro-rating for absence and unpaid leave, multiplier or flat-rate overtime, and lockable pay runs.
+- Monthly attendance summary, payroll register, and headcount reports, scoped by role.
+- A repeatable command that loads a fictional office, including a locked pay run.
 - Swagger UI, ReDoc, and a committed OpenAPI schema.
 - Database health endpoint, SQLite development/tests, PostgreSQL production settings.
 - Locked uv environment, Docker image definition, and GitHub Actions checks.
 
-Still planned for v1.0.0: reports, fictional sample data, and release preparation. Schools and clinics follow later. These features are not implemented. Payroll calculates gross pay only: no deductions, net pay, or statutory compliance (including PF, ESI, or TDS). The clinic module will cover staff only, with no patient or medical records. Read the [attendance rules](docs/attendance.md), [office rules](docs/offices.md), [payroll rules](docs/payroll.md), and [implementation plan](docs/roadmap.md).
+Still planned for v1.0.0: release preparation. Schools and clinics follow later and are not implemented. Payroll calculates gross pay only: no deductions, net pay, or statutory compliance (including PF, ESI, or TDS). The clinic module will cover staff only, with no patient or medical records. Read the [attendance rules](docs/attendance.md), [office rules](docs/offices.md), [payroll rules](docs/payroll.md), [reports and sample data](docs/reports.md), and [implementation plan](docs/roadmap.md).
 
 ## Quick start
 
@@ -36,12 +38,19 @@ This starts a disposable local SQLite demo in development mode. Remove it with `
 docker compose exec api python manage.py createsuperuser
 ```
 
+To explore with fictional office data instead, load the demo accounts (all sharing the password you choose):
+
+```sh
+docker compose exec api python manage.py load_sample_data --password 'choose-a-strong-password'
+```
+
 With Python 3.13 and [uv](https://docs.astral.sh/uv/):
 
 ```sh
 uv sync --frozen
 uv run python manage.py migrate
 uv run python manage.py createsuperuser
+uv run python manage.py load_sample_data --password 'choose-a-strong-password'  # optional
 uv run python manage.py runserver
 ```
 
@@ -49,7 +58,9 @@ The Python path keeps data in the ignored `db.sqlite3` file. No credentials are 
 
 Open [Swagger UI](http://127.0.0.1:8000/api/docs/), [ReDoc](http://127.0.0.1:8000/api/redoc/), or [admin](http://127.0.0.1:8000/admin/). Check [health](http://127.0.0.1:8000/health/).
 
-Use the superuser to create ordinary accounts in admin, then log in through
+With sample data, log in through Swagger as `demo.hr`, `demo.manager`, or
+`demo.employee`; see [sample data](docs/reports.md#fictional-sample-data).
+Otherwise, use the superuser to create ordinary accounts in admin, then log in through
 Swagger to create departments and employee records. Assign the first operations
 admin through the employee role endpoint. See [onboarding](docs/api.md#staff-onboarding)
 and the [permission matrix](docs/permissions.md). Business records are read-only

@@ -1,10 +1,10 @@
-from django.utils import timezone
 from rest_framework import serializers
 
 from apps.staff.serializers import StrictFieldsMixin
 
 from . import services
 from .models import Attendance, Holiday, LeaveRequest, LeaveStatus, Shift, ShiftAssignment
+from .selectors import day_statuses
 
 
 class ShiftSerializer(StrictFieldsMixin, serializers.ModelSerializer):
@@ -41,18 +41,7 @@ class AssignmentSerializer(StrictFieldsMixin, serializers.ModelSerializer):
         read_only_fields = ["id", "starts_at", "ends_at", "day_status"]
 
     def get_day_status(self, obj) -> str:
-        leave = LeaveRequest.objects.filter(
-            employee_id=obj.employee_id,
-            status=LeaveStatus.APPROVED,
-            start_date__lte=obj.date,
-            end_date__gte=obj.date,
-        ).first()
-        if leave:
-            return f"{leave.leave_type}_leave"
-        attendance = Attendance.objects.filter(assignment=obj).first()
-        if attendance:
-            return "present" if attendance.check_out else "open"
-        return "absent" if obj.ends_at <= timezone.now() else "scheduled"
+        return day_statuses([obj])[obj.pk]
 
     def create(self, validated_data):
         return services.create_assignment(actor=self.context["request"].user, data=validated_data)

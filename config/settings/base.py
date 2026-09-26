@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     "apps.attendance",
     "apps.offices",
     "apps.payroll",
+    "apps.reports",
+    "apps.sample_data",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -113,5 +115,6 @@ SPECTACULAR_SETTINGS = {
     "ENUM_NAME_OVERRIDES": {
         "TimesheetStatusEnum": "apps.offices.models.TimesheetStatus.choices",
         "RequestStatusEnum": "apps.attendance.models.LeaveStatus.choices",
+        "PayRunStatusEnum": "apps.payroll.models.PayRunStatus.choices",
     },
 }

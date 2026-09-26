@@ -60,7 +60,7 @@ employee numbers/account links, and referenced-department deletion return 400.
 
 Use PATCH `{"is_active":false}` to deactivate other employees. Operational access
 is revoked immediately; login is independent. To disable login too, deactivate the
-authentication account in Django admin. There is no fictional-data seed command yet.
+authentication account in Django admin. To skip onboarding, load the [fictional sample data](reports.md#fictional-sample-data) into an empty database.
 
 ## Attendance and leave API
 
@@ -177,4 +177,14 @@ Create a structure with multiplier overtime:
 For a flat rate, send `"overtime_method": "flat"` and `"overtime_hourly_rate": "300.00"`
 instead of the multiplier. Money is returned as decimal strings.
 
-Reporting, schools, and clinics remain planned.
+## Reports API
+
+Read [reports](reports.md) for definitions and scoping. Reports are unpaginated.
+
+| Methods | Path | Behavior |
+| --- | --- | --- |
+| GET | `/api/v1/reports/attendance-summary/?year=2026&month=10` | Day-status counts and worked seconds per visible employee; optional `department`. |
+| GET | `/api/v1/reports/payroll-register/?year=2026&month=10` | Admin/HR: payslip rows and money totals for that month's run. |
+| GET | `/api/v1/reports/headcount/?date=2026-10-31` | Admin/HR/manager: employed staff by department and role; `date` defaults to today. |
+
+Missing or invalid query parameters return 400. Schools and clinics remain planned.

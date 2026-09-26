@@ -1362,6 +1362,89 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/v1/reports/attendance-summary/:
+    get:
+      operationId: api_v1_reports_attendance_summary_retrieve
+      parameters:
+      - in: query
+        name: department
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: month
+        schema:
+          type: integer
+          maximum: 12
+          minimum: 1
+        required: true
+      - in: query
+        name: year
+        schema:
+          type: integer
+          maximum: 2100
+          minimum: 2000
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttendanceSummary'
+          description: ''
+  /api/v1/reports/headcount/:
+    get:
+      operationId: api_v1_reports_headcount_retrieve
+      parameters:
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Headcount'
+          description: ''
+  /api/v1/reports/payroll-register/:
+    get:
+      operationId: api_v1_reports_payroll_register_retrieve
+      parameters:
+      - in: query
+        name: month
+        schema:
+          type: integer
+          maximum: 12
+          minimum: 1
+        required: true
+      - in: query
+        name: year
+        schema:
+          type: integer
+          maximum: 2100
+          minimum: 2000
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayrollRegister'
+          description: ''
   /api/v1/shift-assignments/:
     get:
       operationId: api_v1_shift_assignments_list
@@ -1708,6 +1791,92 @@ components:
       - check_in
       - check_out
       - id
+    AttendanceCounts:
+      type: object
+      properties:
+        scheduled_days:
+          type: integer
+        present:
+          type: integer
+        open:
+          type: integer
+        absent:
+          type: integer
+        paid_leave:
+          type: integer
+        unpaid_leave:
+          type: integer
+        scheduled:
+          type: integer
+        worked_seconds:
+          type: integer
+      required:
+      - absent
+      - open
+      - paid_leave
+      - present
+      - scheduled
+      - scheduled_days
+      - unpaid_leave
+      - worked_seconds
+    AttendanceRow:
+      type: object
+      properties:
+        scheduled_days:
+          type: integer
+        present:
+          type: integer
+        open:
+          type: integer
+        absent:
+          type: integer
+        paid_leave:
+          type: integer
+        unpaid_leave:
+          type: integer
+        scheduled:
+          type: integer
+        worked_seconds:
+          type: integer
+        employee:
+          type: integer
+        employee_number:
+          type: string
+        name:
+          type: string
+        department:
+          type: string
+      required:
+      - absent
+      - department
+      - employee
+      - employee_number
+      - name
+      - open
+      - paid_leave
+      - present
+      - scheduled
+      - scheduled_days
+      - unpaid_leave
+      - worked_seconds
+    AttendanceSummary:
+      type: object
+      properties:
+        year:
+          type: integer
+        month:
+          type: integer
+        employees:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttendanceRow'
+        totals:
+          $ref: '#/components/schemas/AttendanceCounts'
+      required:
+      - employees
+      - month
+      - totals
+      - year
     CheckIn:
       type: object
       properties:
@@ -1742,6 +1911,19 @@ components:
       required:
       - code
       - id
+      - name
+    DepartmentCount:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        count:
+          type: integer
+      required:
+      - code
+      - count
       - name
     Employee:
       type: object
@@ -1854,6 +2036,27 @@ components:
       - id
       - starts_at
       - timesheet
+    Headcount:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        total:
+          type: integer
+        by_department:
+          type: array
+          items:
+            $ref: '#/components/schemas/DepartmentCount'
+        by_role:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleCount'
+      required:
+      - by_department
+      - by_role
+      - date
+      - total
     Health:
       type: object
       properties:
@@ -2489,6 +2692,33 @@ components:
       description: |-
         * `draft` - Draft
         * `locked` - Locked
+    PayrollRegister:
+      type: object
+      properties:
+        pay_run:
+          type: integer
+        year:
+          type: integer
+        month:
+          type: integer
+        status:
+          $ref: '#/components/schemas/PayRunStatusEnum'
+        standard_working_days:
+          type: integer
+        employees:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegisterRow'
+        totals:
+          $ref: '#/components/schemas/RegisterTotals'
+      required:
+      - employees
+      - month
+      - pay_run
+      - standard_working_days
+      - status
+      - totals
+      - year
     Payslip:
       type: object
       properties:
@@ -2574,6 +2804,68 @@ components:
       - salary_structure
       - standard_working_days
       - unpaid_leave_days
+    RegisterRow:
+      type: object
+      properties:
+        base_pay:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        overtime_pay:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        gross_pay:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        payslip:
+          type: integer
+        employee:
+          type: integer
+        employee_number:
+          type: string
+        name:
+          type: string
+        department:
+          type: string
+        payable_days:
+          type: integer
+        overtime_seconds:
+          type: integer
+      required:
+      - base_pay
+      - department
+      - employee
+      - employee_number
+      - gross_pay
+      - name
+      - overtime_pay
+      - overtime_seconds
+      - payable_days
+      - payslip
+    RegisterTotals:
+      type: object
+      properties:
+        base_pay:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        overtime_pay:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        gross_pay:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        employees:
+          type: integer
+      required:
+      - base_pay
+      - employees
+      - gross_pay
+      - overtime_pay
     RequestStatusEnum:
       enum:
       - pending
@@ -2602,6 +2894,16 @@ components:
         role:
           $ref: '#/components/schemas/RoleEnum'
       required:
+      - role
+    RoleCount:
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        count:
+          type: integer
+      required:
+      - count
       - role
     RoleEnum:
       enum:

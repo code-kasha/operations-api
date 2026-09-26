@@ -7,14 +7,8 @@ from decimal import ROUND_HALF_UP, Decimal
 from django.conf import settings
 from django.db.models import Q
 
-from apps.attendance.models import (
-    Attendance,
-    Holiday,
-    LeaveRequest,
-    LeaveStatus,
-    LeaveType,
-    ShiftAssignment,
-)
+from apps.attendance.models import Holiday, ShiftAssignment
+from apps.attendance.selectors import day_statuses
 from apps.offices.selectors import approved_overtime_requests
 from apps.staff.models import Employee
 
@@ -62,27 +56,9 @@ def structure_for(employee, last):
 
 def deduction_days(employee, first, last):
     """Loss-of-pay days: assigned shifts that were absences or approved unpaid leave."""
-    leave_types = {}
-    for leave in LeaveRequest.objects.filter(
-        employee=employee, status=LeaveStatus.APPROVED, start_date__lte=last, end_date__gte=first
-    ):
-        for day in leave.working_dates:
-            leave_types[date.fromisoformat(day)] = leave.leave_type
-    attended = set(
-        Attendance.objects.filter(
-            assignment__employee=employee, assignment__date__range=(first, last)
-        ).values_list("assignment__date", flat=True)
-    )
-    absent = unpaid = 0
-    for day in ShiftAssignment.objects.filter(
-        employee=employee, date__range=(first, last)
-    ).values_list("date", flat=True):
-        leave_type = leave_types.get(day)
-        if leave_type == LeaveType.UNPAID:
-            unpaid += 1
-        elif leave_type is None and day not in attended:
-            absent += 1
-    return absent, unpaid
+    assignments = ShiftAssignment.objects.filter(employee=employee, date__range=(first, last))
+    statuses = list(day_statuses(assignments).values())
+    return statuses.count("absent"), statuses.count("unpaid_leave")
 
 
 def unpaid_overtime(employee, last):

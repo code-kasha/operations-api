@@ -1,7 +1,7 @@
 # Implementation plan
 
 Akash selected **shared core + offices** for the first release, targeting v1.0.0.
-The foundation, staff/permissions, attendance/leave, office operations, and basic payroll are implemented. The remaining steps
+The foundation, staff/permissions, attendance/leave, office operations, basic payroll, and reports/sample data are implemented. The remaining steps
 record intended work, not shipped capabilities or a delivery-date commitment.
 
 ## Build order
@@ -27,9 +27,10 @@ record intended work, not shipped capabilities or a delivery-date commitment.
    rollback, duplicate runs, and locked immutability. Gross pay only; no
    statutory claims. Fuller-version ideas are in
    [payroll improvements](payroll-improvements.md).
-5. **Reports and sample data.** Monthly attendance summaries, payroll
-   register, and headcount with role-scoped access. Provide an atomic,
-   repeatable fictional-data command demonstrating an office workflow.
+5. **Reports and sample data — implemented.** Monthly attendance summary,
+   payroll register, and headcount with role-scoped access, and an atomic,
+   repeatable `load_sample_data` command covering the office workflow through
+   a locked pay run. See [reports](reports.md).
 6. **Release preparation.** Complete the API/deployment guides, committed
    schema, behavioral tests, and CI checks. Verify Docker startup and
    PostgreSQL deployment configuration. Prepare the multi-architecture

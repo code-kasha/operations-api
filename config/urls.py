@@ -12,6 +12,7 @@ from config.views import HealthView
 urlpatterns = [
     path("api/v1/offices/", include("apps.offices.urls")),
     path("api/v1/payroll/", include("apps.payroll.urls")),
+    path("api/v1/reports/", include("apps.reports.urls")),
     path("api/v1/", include("apps.attendance.urls")),
     path("api/v1/", include("apps.staff.urls")),
     path("health/", HealthView.as_view(), name="health"),
