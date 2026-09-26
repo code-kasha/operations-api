@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
@@ -10,6 +10,7 @@ from apps.accounts.views import LoginView, LogoutView, MeView, RefreshView
 from config.views import HealthView
 
 urlpatterns = [
+    path("api/v1/", include("apps.staff.urls")),
     path("health/", HealthView.as_view(), name="health"),
     path("admin/", admin.site.urls),
     path("api/v1/auth/token/", LoginView.as_view(), name="token"),

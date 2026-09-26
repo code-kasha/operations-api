@@ -7,12 +7,20 @@
 - Python 3.13, Django 5.2, DRF, uv, Ruff, and pytest.
 - SQLite for local development and CI; PostgreSQL for production.
 - A custom `accounts.User` exists before the first migration so employee and role models can evolve without replacing Django's auth table later.
-- JWT authentication is implemented; business role permissions are not yet implemented. Django's admin permissions are separate from the planned operations roles.
+- JWT authentication and employee-based business roles are implemented. Django's admin permissions are separate from operations roles; superusers can bootstrap an operations admin. See [permissions](permissions.md).
 - Development is the management-command default; WSGI/ASGI and the container default to production.
 
-## Implementation conventions for upcoming modules
+## Implementation conventions
 
 Keep views thin. Serializers validate request shape; services perform business mutations in transactions. Role-aware querysets control visibility, with hidden records returning 404. Write activity history only through the service responsible for the associated mutation. Payroll calculations and pay-run locking must be transactionally tested before being advertised.
+
+`apps/staff` implements departments, employee/account links, fixed business roles,
+and staff activity. Services recheck write permissions and lock existing target
+rows during updates. Employee deletion is disabled and department/account foreign
+keys are protected. Activity stores the actor, action, target, timestamp, and names
+of submitted fields; it is not a before/after data snapshot. Staff admin views are
+read-only to keep business mutations inside the service layer. SQLite tests verify
+validation and rollback; they do not demonstrate PostgreSQL row-lock concurrency.
 
 ## Planned scope
 

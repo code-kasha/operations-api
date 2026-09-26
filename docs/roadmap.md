@@ -1,16 +1,16 @@
 # Implementation plan
 
 Akash selected **shared core + offices** for the first release, targeting v1.0.0.
-Only the foundation is implemented today. This plan records intended work,
-not shipped capabilities or a delivery-date commitment.
+The foundation and staff/permissions step are implemented. The remaining steps
+record intended work, not shipped capabilities or a delivery-date commitment.
 
 ## Build order
 
-1. **Staff and permissions.** Departments, employee records linked to user
-   accounts, business roles, and role-scoped access. Define the permission
-   matrix before implementing endpoints. Test visibility, forbidden writes,
-   and privilege escalation; hidden records must return 404. Keep business
-   roles distinct from Django admin access.
+1. **Staff and permissions — implemented.** Departments, employee records linked to user
+   accounts, business roles, and role-scoped access. The permission
+   matrix is documented in [permissions](permissions.md). Tests cover visibility,
+   forbidden writes, privilege escalation, and hidden-record 404s. Business roles
+   remain distinct from Django admin access; changes are audited in transactions.
 2. **Attendance and leave.** Shifts, check-in/check-out, holidays, leave
    requests, and approval transitions. Define time-zone, overlap, and
    absence rules. Test invalid transitions and transactional changes.

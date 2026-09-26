@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "drf_spectacular_sidecar",
     "apps.accounts",
+    "apps.staff",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -97,7 +98,7 @@ SIMPLE_JWT = {
 }
 SPECTACULAR_SETTINGS = {
     "TITLE": "Operations API",
-    "DESCRIPTION": "Staff operations foundation. Fictional data only; business modules planned.",
+    "DESCRIPTION": "Staff directory and role-scoped operations API. Fictional data only.",
     "VERSION": "0.1.0",
     "SERVE_INCLUDE_SCHEMA": False,
     "SWAGGER_UI_DIST": "SIDECAR",
