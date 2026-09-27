@@ -72,7 +72,7 @@ Not verified: a real domain, certificate and proxy, and PostgreSQL concurrency u
 
 ## Hosted demo
 
-The public demo runs the image on [Render](https://render.com/)'s free tier with a free [Neon](https://neon.tech/) PostgreSQL database, until **27 December 2026**. After that date it shuts down as planned; run it yourself with the [quick start](../README.md#quick-start).
+The public demo, [operations-api-ji51.onrender.com](https://operations-api-ji51.onrender.com/), runs the image on [Render](https://render.com/)'s free tier with a free [Neon](https://neon.tech/) PostgreSQL 17 database in Singapore, until **27 December 2026**. After that date it shuts down as planned; run it yourself with the [quick start](../README.md#quick-start).
 
 The demo's accounts and shared password are public, so anyone can change its data. The demo therefore starts with `deploy/demo-start.sh`, which migrates, **erases every record and loads fresh sample data** with `reset_demo`, then serves. Render's free services sleep after 15 minutes without traffic, so the demo resets whenever it wakes, and its dates stay current. The first request after a quiet spell takes about a minute.
 
@@ -97,7 +97,16 @@ After every push to `main`, the `deploy` job in CI waits for the checks, trigger
 
 Render terminates HTTPS in front of the app and forwards plain HTTP with `X-Forwarded-Proto`. Without `TRUST_PROXY_HTTPS=true`, Django would see HTTP and redirect in a loop. Trusting the header is safe only if every request reaching the app arrived over HTTPS. Render redirects plain HTTP to HTTPS at its edge, which makes that true. Confirm it when deploying: `curl -I http://your-service.onrender.com/health/` should be redirected by Render, and `https://` should return 200.
 
-`deploy/demo-start.sh` and the reset were verified locally on 27 September 2026 (see above). They have not yet been verified on Render or Neon.
+**Verified on Render and Neon** on 27 September 2026:
+- Render's edge redirects plain HTTP to HTTPS (301), and HSTS is set.
+- The start script migrates, resets the data and serves.
+- JWT login works; a wrong password returns 401.
+- The payroll register matches the local run, and role scoping holds (a manager sees their department; an employee gets 404 on the register and 403 on headcount).
+- The CI deploy job waits until `/health/` reports the pushed commit.
+
+Two setup mistakes produce misleading symptoms:
+- An `ALLOWED_HOSTS` value that doesn't exactly match the host name returns 400 for every request, including `/health/`; the logs name the refused host.
+- Omitting the Docker Command leaves the database unmigrated: `/health/` still passes, but login returns 500.
 
 ## CI and releases
 

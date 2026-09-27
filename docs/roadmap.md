@@ -35,10 +35,8 @@ record intended work, not shipped capabilities or a delivery-date commitment.
    screenshots and release notes are written. The image was verified on
    PostgreSQL 17 and builds for arm64. The tag-triggered release workflow and
    the demo deploy job are in CI. The demo ends on 27 December 2026 and resets
-   on every start. After tagging, the remaining steps are:
-   - make the container package public
-   - finish the Render demo's start command
-   - publish the demo link and password in the README
+   on every start. The container package is public, and the live demo runs on Render and
+   Neon, linked with its password from the README.
 
 Each implementation step includes migrations where needed, service-layer
 writes, permission checks, tests, and updated API documentation/schema.

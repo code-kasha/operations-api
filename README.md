@@ -9,7 +9,7 @@ A Django REST API for running the staff side of a small organisation: staff reco
 [![Python 3.13](https://img.shields.io/badge/python-3.13-blue.svg)](https://www.python.org/)
 [![Django 5.2 LTS](https://img.shields.io/badge/django-5.2%20LTS-0c4b33.svg)](https://docs.djangoproject.com/en/5.2/)
 
-[Download v1.0.0](https://github.com/code-kasha/operations-api/releases/latest) · [API reference](docs/api.md) · [Permissions](docs/permissions.md) · [Payroll rules](docs/payroll.md) · [Deploy it yourself](docs/deployment.md) · [Contributing](CONTRIBUTING.md)
+[Live demo](https://operations-api-ji51.onrender.com/) (until 27 December 2026) · [Download v1.0.0](https://github.com/code-kasha/operations-api/releases/latest) · [API reference](docs/api.md) · [Permissions](docs/permissions.md) · [Payroll rules](docs/payroll.md) · [Deploy it yourself](docs/deployment.md) · [Contributing](CONTRIBUTING.md)
 
 <img src="docs/images/swagger-overview.png" width="1280" alt="Swagger UI for Operations API 1.0.0: the description 'Staff, attendance, office work, payroll, and reports for one organisation. Fictional data only.', an Authorize button, and endpoints grouped under attendance and auth.">
 
@@ -23,6 +23,8 @@ A Django REST API for running the staff side of a small organisation: staff reco
 - **Transactional and audited:** every change goes through a service in one transaction, recorded in an activity log.
 
 > **Status:** complete as of v1.0.0 and not actively maintained. It works as-is; fork it, reuse it, grow it.
+>
+> **Demo:** [operations-api-ji51.onrender.com](https://operations-api-ji51.onrender.com/) opens Swagger UI and runs until 27 December 2026 on a free tier, so the first request after a quiet spell takes about a minute. Log in as `demo.hr`, `demo.manager` or `demo.employee` with the password `Explore-Operations-2026`. Anyone can change the demo's data, and it resets to fresh sample data whenever it restarts. After that date, run it yourself with Docker or Python.
 >
 > **Fictional data only.** Every name, department and figure is invented. Payroll calculates gross pay and makes no statutory compliance claims (no PF, ESI, professional tax or TDS).
 
