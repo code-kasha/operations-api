@@ -1,7 +1,7 @@
 # Implementation plan
 
 Akash selected **shared core + offices** for the first release, targeting v1.0.0.
-The foundation, staff/permissions, attendance/leave, office operations, basic payroll, and reports/sample data are implemented, and release preparation is under way. The remaining steps
+The foundation, staff/permissions, attendance/leave, office operations, basic payroll, and reports/sample data are implemented and released as v1.0.0. The remaining steps
 record intended work, not shipped capabilities or a delivery-date commitment.
 
 ## Build order
@@ -31,17 +31,14 @@ record intended work, not shipped capabilities or a delivery-date commitment.
    payroll register, and headcount with role-scoped access, and an atomic,
    repeatable `load_sample_data` command covering the office workflow through
    a locked pay run. See [reports](reports.md).
-6. **Release preparation — prepared, not published.** Guides, the README,
+6. **Release — v1.0.0 tagged 27 September 2026.** Guides, the README,
    screenshots and release notes are written. The image was verified on
    PostgreSQL 17 and builds for arm64. The tag-triggered release workflow and
    the demo deploy job are in CI. The demo ends on 27 December 2026 and resets
-   on every start. What remains needs Akash's explicit request:
-   - create the GitHub repository
-   - set up Render and Neon
-   - publish the demo password in the README
-   - date the CHANGELOG entry
-   - push the `v1.0.0` tag
+   on every start. After tagging, the remaining steps are:
    - make the container package public
+   - finish the Render demo's start command
+   - publish the demo link and password in the README
 
 Each implementation step includes migrations where needed, service-layer
 writes, permission checks, tests, and updated API documentation/schema.
